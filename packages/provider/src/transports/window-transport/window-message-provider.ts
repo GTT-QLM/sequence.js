@@ -179,6 +179,11 @@ export class WindowMessageProvider extends BaseProviderTransport {
       throw new Error('ProviderMessage object is empty')
     }
 
+    // maybe our window.open was initially blocked by firefox, so take the one from the init message
+    if (!this.walletWindow && isWindow(event.source)) {
+      this.walletWindow = event.source
+    }
+
     // handle message with base message provider
     this.handleMessage(message)
   }
@@ -191,4 +196,19 @@ export class WindowMessageProvider extends BaseProviderTransport {
     const postedMessage = typeof message !== 'string' ? JSON.stringify(message) : message
     this.walletWindow.postMessage(postedMessage, this.walletURL.origin)
   }
+}
+
+function isWindow(window: any): window is Window {
+  if (typeof window !== 'object') {
+    return false
+  }
+
+  const props = {
+    close: 'function',
+    closed: 'boolean',
+    focus: 'function',
+    postMessage: 'function'
+  }
+
+  return Object.entries(props).every(([name, type]) => typeof window[name] === type)
 }
