@@ -1,5 +1,16 @@
 # @0xsequence/config
 
+## 0.0.0-20230315214030
+
+### Patch Changes
+
+- fix firefox popup blocking
+- Updated dependencies
+  - @0xsequence/abi@0.0.0-20230315214030
+  - @0xsequence/multicall@0.0.0-20230315214030
+  - @0xsequence/network@0.0.0-20230315214030
+  - @0xsequence/utils@0.0.0-20230315214030
+
 ## 0.43.21
 
 ### Patch Changes

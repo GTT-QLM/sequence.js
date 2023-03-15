@@ -1,5 +1,11 @@
 # @0xsequence/indexer
 
+## 0.0.0-20230315214030
+
+### Patch Changes
+
+- fix firefox popup blocking
+
 ## 0.43.21
 
 ### Patch Changes
