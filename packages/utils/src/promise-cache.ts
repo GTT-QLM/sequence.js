@@ -42,6 +42,10 @@ export class PromiseCache {
 
     return entry.promise as Promise<T>
   }
+
+  clear() {
+    this.cache.clear()
+  }
 }
 
 type Entry = {
