@@ -7,6 +7,7 @@ import { Orchestrator } from '@0xsequence/signhub'
 import { encodeTypedDataDigest } from '@0xsequence/utils'
 import { Wallet } from '@0xsequence/wallet'
 import { ethers, TypedDataDomain, TypedDataField } from 'ethers'
+import { BaseAccountStatusFetcher } from './status/fetcher'
 
 export type AccountStatus = {
   original: {
@@ -85,6 +86,8 @@ export class Account {
   public readonly migrator: migrator.Migrator
   public readonly migrations: migrator.Migrations
 
+  public readonly fetcher: BaseAccountStatusFetcher
+
   private orchestrator: Orchestrator
 
   constructor(options: AccountOptions) {
@@ -97,6 +100,14 @@ export class Account {
 
     this.migrations = options.migrations || defaults.DefaultMigrations
     this.migrator = new migrator.Migrator(options.tracker, this.migrations, this.contexts)
+
+    this.fetcher = new BaseAccountStatusFetcher({
+      tracker: this.tracker,
+      migrator: this.migrator,
+      maxVersion: this.migrator.lastMigration().version,
+      reader: (chainId: ethers.BigNumberish) => this.reader(chainId),
+      contexts: this.contexts
+    })
   }
 
   static async new(options: {
@@ -191,15 +202,25 @@ export class Account {
     return ctx
   }
 
+  async walletForChain(chainId: ethers.BigNumberish): Promise<Wallet> {
+    const [version, config] = await Promise.all([
+      this.fetcher.versionOf(this.address, chainId),
+      this.fetcher.configOf(this.address, chainId),
+    ])
+
+    return this.walletForStatus(chainId, version, config)
+  }
+
   walletForStatus(
     chainId: ethers.BigNumberish,
-    status: Pick<AccountStatus, 'version'> & Pick<AccountStatus, 'config'>
+    version: number,
+    config: commons.config.Config,
   ): Wallet {
-    const coder = universal.coderFor(status.version)
+    const coder = universal.coderFor(version)
     return this.walletFor(
       chainId,
-      this.contextFor(status.version),
-      status.config,
+      this.contextFor(version),
+      config,
       coder,
     )
   }
@@ -260,123 +281,45 @@ export class Account {
     return { first: { ...firstImageHash, version: first }, current }
   }
 
-  // Get the status of the account on a given network
-  // this does the following process:
-  // 1. Get the current on-chain status of the wallet (version + imageHash)
-  // 2. Get any pending migrations that have been signed by the wallet
-  // 3. Get any pending configuration updates that have been signed by the wallet
-  // 4. Fetch reverse lookups for both on-chain and pending configurations
-  async status(chainId: ethers.BigNumberish, longestPath: boolean = false): Promise<AccountStatus> {
-    const isDeployedPromise = this.reader(chainId).isDeployed(this.address)
-    const onChainVersionInfoPromise = this.onchainVersionInfo(chainId)
 
-    let onChainImageHash = await this.reader(chainId).imageHash(this.address)
-    if (!onChainImageHash) {
-      const counterfactualImageHash = await this.tracker.imageHashOfCounterfactualWallet({
-        wallet: this.address
-      })
-
-      onChainImageHash = counterfactualImageHash?.imageHash
-    }
-
-    if (!onChainImageHash) {
-      throw new Error(`On-chain imageHash not found for wallet ${this.address}`)
-    }
-
-    const onChainConfig = await this.tracker.configOfImageHash({ imageHash: onChainImageHash })
-    if (!onChainConfig) {
-      throw new Error(`On-chain config not found for imageHash ${onChainImageHash}`)
-    }
-
-    const { current: onChainVersion, first: onChainFirstInfo } = await onChainVersionInfoPromise
-
-    let fromImageHash = onChainImageHash
-    let version = onChainVersion
-    let signedMigrations: migrator.SignedMigration[] = []
-
-    if (onChainVersion !== this.version) {
-      // We either need to use the presigned configuration updates, or we haven't performed
-      // any updates yet, so we can only use the on-chain imageHash as-is
-      const presignedMigrate = await this.migrator.getAllMigratePresignedTransaction({
-        address: this.address,
-        fromImageHash: onChainImageHash,
-        fromVersion: onChainVersion,
-        chainId
-      })
-
-      // The migrator returns the original version and imageHash
-      // if no presigned migration is found, so no need to check here
-      fromImageHash = presignedMigrate.lastImageHash
-      version = presignedMigrate.lastVersion
-
-      signedMigrations = presignedMigrate.signedMigrations
-    }
-
-    const presigned = await this.tracker.loadPresignedConfiguration({
-      wallet: this.address,
-      fromImageHash: fromImageHash,
-      longestPath
-    })
-
-    const imageHash = presigned && presigned.length > 0 ? presigned[presigned.length - 1].nextImageHash : fromImageHash
-    const config = await this.tracker.configOfImageHash({ imageHash })
-    if (!config) {
-      throw new Error(`Config not found for imageHash ${imageHash}`)
-    }
-
-    const isDeployed = await isDeployedPromise
-    const checkpoint = universal.coderFor(version).config.checkpointOf(config as any)
-
-    return {
-      original: onChainFirstInfo,
-      onChain: {
-        imageHash: onChainImageHash,
-        config: onChainConfig,
-        version: onChainVersion,
-        deployed: isDeployed
-      },
-      fullyMigrated: version === this.version,
-      signedMigrations,
-      version,
-      presignedConfigurations: presigned,
-      imageHash,
-      config,
-      checkpoint,
-      canOnchainValidate: (
-        version === this.version &&
-        isDeployed
-      )
-    }
-  }
-
-  private mustBeFullyMigrated(status: AccountStatus) {
-    if (!status.fullyMigrated) {
+  private async mustBeFullyMigrated(chainId: ethers.BigNumberish) {
+    if (await this.fetcher.isMigrated(this.address, chainId).then((x) => !x)) {
       throw new Error(`Wallet ${this.address} is not fully migrated`)
     }
   }
 
   async predecorateTransactions(
     txs: commons.transaction.Transactionish,
-    status: AccountStatus,
     chainId: ethers.BigNumberish,
   ): Promise<commons.transaction.Transactionish> {
     // if onchain wallet config is not up to date
     // then we should append an extra transaction that updates it
     // to the latest "lazy" state
-    if (status.onChain.imageHash !== status.imageHash) {
-      const wallet = this.walletForStatus(chainId, status)
-      const updateConfig = await wallet.buildUpdateConfigurationTransaction(status.config)
+
+    const [imageHash, onChainImageHash] = await Promise.all([
+      this.fetcher.imageHashOf(this.address, chainId),
+      this.fetcher.onChainImageHashOf(this.address, chainId)
+    ])
+
+    if (imageHash !== onChainImageHash) {
+      const [version, config] = await Promise.all([
+        this.fetcher.versionOf(this.address, chainId),
+        this.fetcher.configOf(this.address, chainId)
+      ])
+
+      const wallet = this.walletForStatus(chainId, version, config)
+
+      const updateConfig = await wallet.buildUpdateConfigurationTransaction(config)
       return [(Array.isArray(txs) ? txs : [txs]), updateConfig.transactions].flat()
     }
 
     return txs
   }
 
-  decorateTransactions(
-    bundle: commons.transaction.IntendedTransactionBundle,
-    status: AccountStatus,
-  ): commons.transaction.IntendedTransactionBundle {
-    const bootstrapBundle = this.buildBootstrapTransactions(status)
+  async decorateTransactions(
+    bundle: commons.transaction.IntendedTransactionBundle
+  ): Promise<commons.transaction.IntendedTransactionBundle> {
+    const bootstrapBundle = await this.buildBootstrapTransactions(bundle.chainId)
     if (bootstrapBundle.transactions.length === 0) {
       return bundle
     }
@@ -399,17 +342,18 @@ export class Account {
     }
   }
 
-  decorateSignature<T extends ethers.BytesLike>(
+  async decorateSignature<T extends ethers.BytesLike>(
     signature: T,
-    status: Partial<Pick<AccountStatus, 'presignedConfigurations'>>,
-  ): T | string {
-    if (!status.presignedConfigurations || status.presignedConfigurations.length === 0) {
+    chainId: ethers.BigNumberish,
+  ): Promise<T | string> {
+    const presignedConfigurations = await this.fetcher.presignedConfigurationsOf(this.address, chainId, false)
+    if (!presignedConfigurations || presignedConfigurations.length === 0) {
       return signature
     }
 
     const coder = this.coders.signature
 
-    const chain = status.presignedConfigurations.map((c) => c.signature)
+    const chain = presignedConfigurations.map((c) => c.signature)
     const chainedSignature = coder.chainSignatures(signature, chain)
     return coder.encode(chainedSignature)
   }
@@ -435,14 +379,17 @@ export class Account {
     // the behaviour of being migrated on all chains
 
     const chainRef = ethers.constants.Zero.eq(chainId) ? this.networks[0].chainId : chainId
-    const status = await this.status(chainRef)
+    await this.mustBeFullyMigrated(chainRef)
 
-    this.mustBeFullyMigrated(status)
+    const use = await Promise.all([
+      this.fetcher.configOf(this.address, chainRef),
+      this.fetcher.versionOf(this.address, chainRef)
+    ])
 
-    const wallet = this.walletForStatus(chainId, status)
+    const wallet = this.walletForStatus(chainId, use[1], use[0])
     const signature = await wallet.signDigest(digest)
 
-    return decorate ? this.decorateSignature(signature, status) : signature
+    return decorate ? this.decorateSignature(signature, chainId) : signature
   }
 
   async editConfig(
@@ -452,7 +399,7 @@ export class Account {
       threshold?: ethers.BigNumberish;
     }
   ): Promise<void> {
-    const currentConfig = await this.status(0).then((s) => s.config)
+    const currentConfig = await this.fetcher.configOf(this.address, 0)
     const newConfig = this.coders.config.editConfig(currentConfig, {
       ...changes,
       checkpoint: this.coders.config.checkpointOf(currentConfig).add(1)
@@ -478,11 +425,13 @@ export class Account {
     const signature = await this.signDigest(updateStruct, 0, false)
 
     // save the presigned transaction to the sessions tracker
-    return this.tracker.savePresignedConfiguration({
+    await this.tracker.savePresignedConfiguration({
       wallet: this.address,
       nextConfig: config,
       signature
     })
+
+    this.clearCache()
   }
 
   /**
@@ -496,25 +445,35 @@ export class Account {
    *  by any of the migrations.
    * 
    */
-  buildBootstrapTransactions(
-    status: AccountStatus
-  ): Omit<commons.transaction.IntendedTransactionBundle, 'chainId'> {
+  async buildBootstrapTransactions(
+    chainId: ethers.BigNumberish
+  ): Promise<Omit<commons.transaction.IntendedTransactionBundle, 'chainId'>> {
     const transactions: commons.transaction.Transaction[] = []
 
+
+    const promiseMigrations = this.fetcher.signedMigrationsOf(this.address, chainId)
+    const promiseVersion = this.fetcher.versionOf(this.address, chainId)
+
     // Add wallet deployment if needed
-    if (!status.onChain.deployed) {
+    const deployed = await this.fetcher.isDeployed(this.address, chainId)
+
+    if (!deployed) {
+      const originalDeploymentInfo = await this.fetcher.originalDeploymentInfoOf(this.address)
+
       // Wallet deployment will vary depending on the version
       // so we need to use the context to get the correct deployment
       const deployTransaction = Wallet.buildDeployTransaction(
-        status.original.context,
-        status.original.imageHash
+        originalDeploymentInfo.context,
+        originalDeploymentInfo.imageHash
       )
 
       transactions.push(...deployTransaction.transactions)
     }
 
+    const [signedMigrations, version] = await Promise.all([promiseMigrations, promiseVersion])
+
     // Get pending migrations
-    transactions.push(...status.signedMigrations.map((m) => ({
+    transactions.push(...signedMigrations.map((m) => ({
       to: m.tx.entrypoint,
       data: commons.transaction.encodeBundleExecData(m.tx),
       value: 0,
@@ -527,22 +486,14 @@ export class Account {
     // then we should use one of the intents of the migrations (anyone will do)
     // if it doesn't, then we must build a random intent, this is not ideal
     // because we will not be able to track the transaction later
-    const id = status.signedMigrations.length > 0
-      ? status.signedMigrations[0].tx.intent.id
+    const id = signedMigrations.length > 0
+      ? signedMigrations[0].tx.intent.id
       : ethers.utils.hexlify(ethers.utils.randomBytes(32))
 
     // Everything is encoded as a bundle
     // using the GuestModule of the account version
-    const { guestModule } = this.contextFor(status.version)
+    const { guestModule } = this.contextFor(version)
     return { entrypoint: guestModule, transactions, intent: { id, wallet: this.address } }
-  }
-
-  async bootstrapTransactions(
-    chainId: ethers.BigNumberish,
-    prestatus?: AccountStatus
-  ): Promise<Omit<commons.transaction.IntendedTransactionBundle, 'chainId'>> {
-    const status = prestatus || await this.status(chainId)
-    return this.buildBootstrapTransactions(status)
   }
 
   async doBootstrap(
@@ -550,8 +501,15 @@ export class Account {
     feeQuote?: FeeQuote,
     prestatus?: AccountStatus
   ) {
-    const bootstrapTxs = await this.bootstrapTransactions(chainId, prestatus)
-    return this.relayer(chainId).relay({ ...bootstrapTxs, chainId }, feeQuote)
+    const bootstrapTxs = await this.buildBootstrapTransactions(chainId)
+    const intended = commons.transaction.intendTransactionBundle(
+      bootstrapTxs,
+      this.address,
+      chainId,
+      ethers.utils.hexlify(ethers.utils.randomBytes(32))
+    )
+
+    return this.relayer(chainId).relay(intended, feeQuote)
   }
 
   signMessage(message: ethers.BytesLike, chainId: ethers.BigNumberish): Promise<string> {
@@ -560,27 +518,26 @@ export class Account {
 
   async signTransactions(
     txs: commons.transaction.Transactionish,
-    chainId: ethers.BigNumberish,
-    pstatus?: AccountStatus
+    chainId: ethers.BigNumberish
   ): Promise<commons.transaction.SignedTransactionBundle> {
-    const status = pstatus || await this.status(chainId)
-    this.mustBeFullyMigrated(status)
+    await this.mustBeFullyMigrated(chainId)
 
-    const wallet = this.walletForStatus(chainId, status)
+    const wallet = await this.walletForChain(chainId)
     const signed = await wallet.signTransactions(txs)
 
     return {
       ...signed,
-      signature: this.decorateSignature(signed.signature, status)
+      signature: await this.decorateSignature(signed.signature, chainId)
     }
   }
 
   async signMigrations(chainId: ethers.BigNumberish, editConfig: (prevConfig: commons.config.Config) => commons.config.Config): Promise<boolean> {
-    const status = await this.status(chainId)
-    if (status.fullyMigrated) return false
+    const isMigrated = await this.fetcher.isMigrated(this.address, chainId)
+    if (isMigrated) return false
 
-    const wallet = this.walletForStatus(chainId, status)
-    const signed = await this.migrator.signNextMigration(this.address, status.version, wallet, editConfig(wallet.config))
+    const wallet = await this.walletForChain(chainId)
+    const version = await this.fetcher.versionOf(this.address, chainId)
+    const signed = await this.migrator.signNextMigration(this.address, version, wallet, editConfig(wallet.config))
     if (!signed) return false
 
     await this.tracker.saveMigration(this.address, signed, this.contexts)
@@ -588,52 +545,48 @@ export class Account {
   }
 
   async signAllMigrations(editConfig: (prevConfig: commons.config.Config) => commons.config.Config) {
-    return Promise.all(this.networks.map((n) => this.signMigrations(n.chainId, editConfig)))
+    await Promise.all(this.networks.map((n) => this.signMigrations(n.chainId, editConfig)))
+    this.clearCache()
   }
 
   async isMigratedAllChains(): Promise<boolean> {
-    const statuses = await Promise.all(this.networks.map((n) => this.status(n.chainId)))
-    return statuses.every((s) => s.fullyMigrated)
+    const isMigrated = await Promise.all(this.networks.map((n) => this.fetcher.isMigrated(this.address, n.chainId)))
+    return isMigrated.every((m) => m)
   }
 
   async sendSignedTransactions(
     signedBundle: commons.transaction.IntendedTransactionBundle,
     chainId: ethers.BigNumberish,
-    quote?: FeeQuote,
-    pstatus?: AccountStatus
+    quote?: FeeQuote
   ): Promise<ethers.providers.TransactionResponse> {
-    const status = pstatus || await this.status(signedBundle.chainId)
-    this.mustBeFullyMigrated(status)
-
-    const decoratedBundle = this.decorateTransactions(signedBundle, status)
+    const [decoratedBundle, _] = await Promise.all([
+      this.decorateTransactions(signedBundle),
+      this.mustBeFullyMigrated(chainId)
+    ])
 
     return this.relayer(chainId).relay(decoratedBundle, quote)
   }
 
   async fillGasLimits(
     txs: commons.transaction.Transactionish,
-    chainId: ethers.BigNumberish,
-    status?: AccountStatus
+    chainId: ethers.BigNumberish
   ): Promise<commons.transaction.SimulatedTransaction[]> {
-    const wallet = this.walletForStatus(chainId, status || await this.status(chainId))
+    const wallet = await this.walletForChain(chainId)
     return wallet.fillGasLimits(txs)
   }
 
   async gasRefundQuotes(
     txs: commons.transaction.Transactionish,
     chainId: ethers.BigNumberish,
-    stubSignatureOverrides: Map<string, string>,
-    status?: AccountStatus
+    stubSignatureOverrides: Map<string, string>
   ): Promise<{
     options: FeeOption[];
     quote?: FeeQuote,
     decorated: commons.transaction.IntendedTransactionBundle
   }> {
+    const wallet = await this.walletForChain(chainId)
 
-    const wstatus = status || await this.status(chainId)
-    const wallet = this.walletForStatus(chainId, wstatus)
-
-    const predecorated = await this.predecorateTransactions(txs, wstatus, chainId)
+    const predecorated = await this.predecorateTransactions(txs, chainId)
     const transactions = commons.transaction.fromTransactionish(this.address, predecorated)
 
     // We can't sign the transactions (because we don't want to bother the user)
@@ -655,7 +608,7 @@ export class Account {
       nonce: 0 // The relayer also ignored the nonce
     }
 
-    const decoratedBundle = this.decorateTransactions(signedBundle, wstatus)
+    const decoratedBundle = await this.decorateTransactions(signedBundle)
     const data = commons.transaction.encodeBundleExecData(decoratedBundle)
     const res = await this.relayer(chainId).getFeeOptionsRaw(decoratedBundle.entrypoint, data)
     return { ...res, decorated: decoratedBundle }
@@ -671,10 +624,8 @@ export class Account {
     options: FeeOption[],
     quote?: FeeQuote
   }> {
-    const status = await this.status(args.chainId)
-
-    const transactions = await this.fillGasLimits(args.txs, args.chainId, status)
-    const gasRefundQuote = await this.gasRefundQuotes(transactions, args.chainId, args.stubSignatureOverrides, status)
+    const transactions = await this.fillGasLimits(args.txs, args.chainId)
+    const gasRefundQuote = await this.gasRefundQuotes(transactions, args.chainId, args.stubSignatureOverrides)
     const flatDecorated = commons.transaction.unwind(this.address, gasRefundQuote.decorated.transactions)
 
     return {
@@ -692,11 +643,13 @@ export class Account {
     skipPreDecorate: boolean = false,
     callback?: (signed: commons.transaction.SignedTransactionBundle) => void
   ): Promise<ethers.providers.TransactionResponse> {
-    const status = await this.status(chainId)
-    const predecorated = skipPreDecorate ? txs : await this.predecorateTransactions(txs, status, chainId)
+    const predecorated = skipPreDecorate ? txs : await this.predecorateTransactions(txs, chainId)
     const signed = await this.signTransactions(predecorated, chainId)
     if (callback) callback(signed)
-    return this.sendSignedTransactions(signed, chainId, quote)
+
+    const res = await this.sendSignedTransactions(signed, chainId, quote)
+    this.clearCache()
+    return res
   }
 
   async signTypedData(
@@ -726,24 +679,30 @@ export class Account {
     await Promise.all(this.networks.map(async network => {
       const chainId = network.chainId
 
-      // Getting the status with `longestPath` set to true will give us all the possible configurations
+      // Getting the chain with `longestPath` set to true will give us all the possible configurations
       // between the current onChain config and the latest config, including the ones "flagged for removal"
-      const status = await this.status(chainId, true)
+      const presignedConfigurations = await this.fetcher.presignedConfigurationsOf(this.address, chainId, true)
+
+      const versions = await Promise.all([
+        this.fetcher.onChainVersionOf(this.address, chainId),
+        this.fetcher.versionOf(this.address, chainId)
+      ])
 
       const fullChain = [
-        status.onChain.imageHash,
+        await this.fetcher.onChainImageHashOf(this.address, chainId),
         ...(
-          status.onChain.version !== status.version ? status.signedMigrations.map((m) => universal.coderFor(m.toVersion).config.imageHashOf(m.toConfig as any)) : []
+          versions[0] !== versions[1] ? await this.fetcher.signedMigrationsOf(
+            this.address, chainId
+          ).then((r) => r.map((u) => universal.coderFor(u.toVersion).config.imageHashOf(u.toConfig as any))) : []
         ),
-        ...status.presignedConfigurations.map((update) => update.nextImageHash)
+        ...presignedConfigurations.map((update) => update.nextImageHash)
       ]
 
-      return Promise.all(fullChain.map(async (nextImageHash, iconf) => {
-        const isLast = iconf === fullChain.length - 1
-        const config = await this.tracker.configOfImageHash({ imageHash: nextImageHash })
-
+      return Promise.all(fullChain.map(async (imageHash, iconf) => {
+        const isLast = iconf === presignedConfigurations.length - 1
+        const config = await this.tracker.configOfImageHash({ imageHash })
         if (!config) {
-          console.warn(`AllSigners may be incomplete, config not found for imageHash ${nextImageHash}`)
+          console.warn(`AllSigners may be incomplete, config not found for imageHash ${imageHash}`)
           return
         }
 
@@ -774,5 +733,69 @@ export class Account {
     }))
 
     return allSigners
+  }
+
+  clearCache(): void {
+    this.fetcher.clearCache()
+  }
+
+  /**
+   * @deprecated This method is way too slow, use the individual methods instead.
+   */
+  async status(chainId: ethers.BigNumberish, longestPath: boolean = false): Promise<AccountStatus> {
+    const [
+      originalVersion,
+      originalImageHash,
+      originalContext,
+      onChainImageHash,
+      onChainConfig,
+      onChainVersion,
+      onChainDeployed,
+      fullyMigrated,
+      signedMigrations,
+      version,
+      presignedConfigurations,
+      imageHash,
+      config
+    ] = await Promise.all([
+      this.fetcher.originalVersionOf(this.address),
+      this.fetcher.originalImageHashOf(this.address),
+      this.fetcher.originalContextOf(this.address),
+      this.fetcher.onChainImageHashOf(this.address, chainId),
+      this.fetcher.onChainConfigOf(this.address, chainId),
+      this.fetcher.onChainVersionOf(this.address, chainId),
+      this.fetcher.isDeployed(this.address, chainId),
+      this.fetcher.isMigrated(this.address, chainId),
+      this.fetcher.signedMigrationsOf(this.address, chainId),
+      this.fetcher.versionOf(this.address, chainId),
+      this.fetcher.presignedConfigurationsOf(this.address, chainId, longestPath),
+      this.fetcher.imageHashOf(this.address, chainId),
+      this.fetcher.configOf(this.address, chainId)
+    ])
+
+    const checkpoint = universal.coderFor(version).config.checkpointOf(config as any)
+    const canOnchainValidate = (version === this.version && onChainDeployed)
+
+    return {
+      original: {
+        version: originalVersion,
+        imageHash: originalImageHash,
+        context: originalContext
+      },
+      onChain: {
+        imageHash: onChainImageHash,
+        config: onChainConfig,
+        version: onChainVersion,
+        deployed: onChainDeployed
+      },
+      fullyMigrated,
+      signedMigrations,
+      version,
+      presignedConfigurations,
+      imageHash,
+      config,
+      checkpoint,
+      canOnchainValidate
+    }
   }
 }
