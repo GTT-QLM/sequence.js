@@ -11,7 +11,7 @@ runs:
 
     - name: Update PNPM
       shell: bash
-      run: npm install -g pnpm@7.22.0
+      run: npm install -g pnpm@8.0.0
 
     - name: Get pnpm store directory
       id: pnpm-cache
