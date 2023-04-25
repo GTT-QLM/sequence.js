@@ -474,7 +474,7 @@ describe('Wallet integration', function () {
 
       beforeEach(async () => {
         const status = await ogAccount.status(networks[0].chainId)
-        const wallet = ogAccount.walletForStatus(networks[0].chainId, status)
+        const wallet = ogAccount.walletForStatus(networks[0].chainId, status.version, status.config)
 
         const newSigner = randomWallet(`After updating old wallet ${newSignerIndex++}`)
         orchestrator.setSigners([referenceSigner, newSigner])
