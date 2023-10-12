@@ -50,6 +50,9 @@ export enum ChainId {
   HOMEVERSE_TESTNET = 40875,
   HOMEVERSE = 19011,
 
+  // Polygon zkEVM Stavanger testnet
+  STAVANGER = 686669576,
+
   // HARDHAT TESTNETS
   HARDHAT = 31337,
   HARDHAT_2 = 31338
