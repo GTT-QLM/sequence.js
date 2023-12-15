@@ -1,8 +1,9 @@
-import { ethers, BigNumber, utils } from 'ethers'
-import { promisify, getRandomInt } from '@0xsequence/utils'
-import { Multicall, MulticallOptions } from '../multicall'
+import { JsonRpcRequest, JsonRpcResponseCallback, JsonRpcVersion } from '@0xsequence/network'
+import { getRandomInt, promisify } from '@0xsequence/utils'
+import { BigNumber, ethers, utils } from 'ethers'
+
 import { JsonRpcMethod } from '../constants'
-import { JsonRpcVersion, JsonRpcRequest, JsonRpcResponseCallback } from '@0xsequence/network'
+import { Multicall, MulticallOptions } from '../multicall'
 
 export const ProxyMethods = [
   'getNetwork',

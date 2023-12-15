@@ -1,8 +1,9 @@
-import { BytesLike, TypedDataDomain, TypedDataField } from 'ethers'
 import { ChainIdLike } from '@0xsequence/network'
-import { encodeMessageDigest, TypedData, encodeTypedDataDigest } from '@0xsequence/utils'
-import { isValidSignature, prefixEIP191Message } from '../utils'
+import { TypedData, encodeMessageDigest, encodeTypedDataDigest } from '@0xsequence/utils'
+import { BytesLike, TypedDataDomain, TypedDataField } from 'ethers'
+
 import { SequenceSigner, SingleNetworkSequenceSigner } from '../signer'
+import { isValidSignature, prefixEIP191Message } from '../utils'
 
 /**
  *  This class is redundant with the SequenceSigner class, but it is here for now to

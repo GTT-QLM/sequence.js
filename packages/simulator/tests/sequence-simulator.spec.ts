@@ -1,23 +1,22 @@
-import { CallReceiverMock, HookCallerMock } from '@0xsequence/wallet-contracts'
+import { commons, v2 } from '@0xsequence/core'
 import { LocalRelayer } from '@0xsequence/relayer'
-import { ethers } from 'ethers'
+import { Orchestrator } from '@0xsequence/signhub'
+import { context } from '@0xsequence/tests'
 import { configureLogger } from '@0xsequence/utils'
-
-import chaiAsPromised from 'chai-as-promised'
+import { SequenceOrchestratorWrapper, Wallet, WalletV2 } from '@0xsequence/wallet'
+import { encodeData } from '@0xsequence/wallet/tests/utils'
+import { CallReceiverMock, HookCallerMock } from '@0xsequence/wallet-contracts'
 import * as chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+import { ethers } from 'ethers'
+
+import { simulate } from '../src'
 
 const CallReceiverMockArtifact = require('@0xsequence/wallet-contracts/artifacts/contracts/mocks/CallReceiverMock.sol/CallReceiverMock.json')
 
 const { expect } = chai.use(chaiAsPromised)
 
 configureLogger({ logLevel: 'DEBUG', silence: false })
-
-import { SequenceOrchestratorWrapper, Wallet, WalletV2 } from '@0xsequence/wallet'
-import { simulate } from '../src'
-import { encodeData } from '@0xsequence/wallet/tests/utils'
-import { context } from '@0xsequence/tests'
-import { commons, v2 } from '@0xsequence/core'
-import { Orchestrator } from '@0xsequence/signhub'
 
 describe('Wallet integration', function () {
   let contexts: Awaited<ReturnType<typeof context.deploySequenceContexts>>

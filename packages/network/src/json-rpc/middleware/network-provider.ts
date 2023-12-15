@@ -1,10 +1,11 @@
 import { ethers } from 'ethers'
+
 import {
   JsonRpcHandlerFunc,
-  JsonRpcRequest,
-  JsonRpcResponseCallback,
   JsonRpcMiddleware,
-  JsonRpcMiddlewareHandler
+  JsonRpcMiddlewareHandler,
+  JsonRpcRequest,
+  JsonRpcResponseCallback
 } from '../types'
 
 export const networkProviderMiddleware =

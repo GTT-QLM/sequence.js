@@ -1,9 +1,10 @@
+import { walletContracts } from '@0xsequence/abi'
 import { commons, v1, v2 } from '@0xsequence/core'
 import { ethers } from 'ethers'
 
-import { Migration, MIGRATION_NONCE_SPACE } from '.'
-import { walletContracts } from '@0xsequence/abi'
 import { UnsignedMigration } from '../migrator'
+
+import { MIGRATION_NONCE_SPACE, Migration } from '.'
 
 export class Migration_v1v2 implements Migration<v1.config.WalletConfig, v2.config.WalletConfig> {
   version = 2

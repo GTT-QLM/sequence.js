@@ -1,6 +1,7 @@
+import { spawnSync } from 'child_process'
+
 import test from 'ava'
 import puppeteer from 'puppeteer'
-import { spawnSync } from 'child_process'
 
 export const runBrowserTests = async (title: string, path: string) => {
   test.serial(title, browserContext, async (t, page: puppeteer.Page) => {

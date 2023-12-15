@@ -1,8 +1,9 @@
-import { ethers, providers } from 'ethers'
 import { walletContracts } from '@0xsequence/abi'
-import { FeeOption, FeeQuote, Relayer, SimulateResult } from '.'
-import { logger, Optionals } from '@0xsequence/utils'
 import { commons } from '@0xsequence/core'
+import { Optionals, logger } from '@0xsequence/utils'
+import { ethers, providers } from 'ethers'
+
+import { FeeOption, FeeQuote, Relayer, SimulateResult } from '.'
 
 const DEFAULT_GAS_LIMIT = ethers.BigNumber.from(800000)
 

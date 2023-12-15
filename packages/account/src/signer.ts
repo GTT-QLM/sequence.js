@@ -1,8 +1,9 @@
-import { ChainId } from '@0xsequence/network'
-import { Account } from './account'
-import { ethers } from 'ethers'
 import { commons } from '@0xsequence/core'
+import { ChainId } from '@0xsequence/network'
 import { FeeOption, proto } from '@0xsequence/relayer'
+import { ethers } from 'ethers'
+
+import { Account } from './account'
 import { isDeferrable } from './utils'
 
 export type AccountSignerOptions = {

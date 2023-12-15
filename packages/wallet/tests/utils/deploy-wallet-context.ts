@@ -1,13 +1,12 @@
-import { ethers } from 'ethers'
-
 import {
   Factory,
   GuestModule,
   MainModule,
   MainModuleUpgradable,
-  SequenceUtils,
-  RequireFreshSigner
+  RequireFreshSigner,
+  SequenceUtils
 } from '@0xsequence/wallet-contracts'
+import { ethers } from 'ethers'
 
 const FactoryArtifact = require('@0xsequence/wallet-contracts/artifacts/contracts/Factory.sol/Factory.json')
 const GuestModuleArtifact = require('@0xsequence/wallet-contracts/artifacts/contracts/modules/GuestModule.sol/GuestModule.json')

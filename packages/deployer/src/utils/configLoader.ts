@@ -1,7 +1,8 @@
-import * as dotenv from 'dotenv'
 import * as path from 'path'
-import { HttpNetworkConfig, HttpNetworkHDAccountsConfig } from 'hardhat/types/config'
+
+import * as dotenv from 'dotenv'
 import { ethers } from 'ethers'
+import { HttpNetworkConfig, HttpNetworkHDAccountsConfig } from 'hardhat/types/config'
 
 type EthereumNetworksTypes = 'rinkeby' | 'ropsten' | 'kovan' | 'goerli' | 'mainnet' | 'mumbai' | 'matic'
 

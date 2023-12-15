@@ -1,4 +1,4 @@
-import { JsonRpcHandlerFunc, JsonRpcRequest, JsonRpcResponse, JsonRpcResponseCallback, JsonRpcMiddleware } from '../types'
+import { JsonRpcHandlerFunc, JsonRpcMiddleware, JsonRpcRequest, JsonRpcResponse, JsonRpcResponseCallback } from '../types'
 
 export const exceptionProviderMiddleware: JsonRpcMiddleware = (next: JsonRpcHandlerFunc) => {
   return (request: JsonRpcRequest, callback: JsonRpcResponseCallback, chainId?: number) => {

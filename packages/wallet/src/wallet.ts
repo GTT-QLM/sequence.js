@@ -1,9 +1,9 @@
-import { ethers } from 'ethers'
+import { walletContracts } from '@0xsequence/abi'
 import { commons, v1, v2 } from '@0xsequence/core'
+import { FeeQuote, Relayer } from '@0xsequence/relayer'
 import { SignatureOrchestrator, SignerState, Status } from '@0xsequence/signhub'
 import { Deferrable, subDigestOf } from '@0xsequence/utils'
-import { FeeQuote, Relayer } from '@0xsequence/relayer'
-import { walletContracts } from '@0xsequence/abi'
+import { ethers } from 'ethers'
 
 import { resolveArrayProperties } from './utils'
 

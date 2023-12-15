@@ -1,6 +1,7 @@
-import { providers } from 'ethers'
-import { Multicall, MulticallOptions } from '../multicall'
 import { JsonRpcRequest, JsonRpcResponseCallback } from '@0xsequence/network'
+import { providers } from 'ethers'
+
+import { Multicall, MulticallOptions } from '../multicall'
 
 type ExternalProvider = providers.ExternalProvider
 

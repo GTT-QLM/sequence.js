@@ -1,5 +1,5 @@
-import { expect } from 'chai'
 import { queryStringFromObject, queryStringToObject } from '@0xsequence/utils'
+import { expect } from 'chai'
 
 describe('query-string', function () {
   it('encoding, a', () => {

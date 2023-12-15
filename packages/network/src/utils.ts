@@ -1,6 +1,8 @@
-import { ethers, BigNumberish } from 'ethers'
-import { ChainIdLike } from '.'
+import { BigNumberish, ethers } from 'ethers'
+
 import { NetworkConfig } from './config'
+
+import { ChainIdLike } from '.'
 
 export function isNetworkConfig(cand: any): cand is NetworkConfig {
   return cand && cand.chainId !== undefined && cand.name !== undefined && cand.rpcUrl !== undefined && cand.relayer !== undefined

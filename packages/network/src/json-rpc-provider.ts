@@ -1,15 +1,16 @@
 import { ethers } from 'ethers'
+
+import { ChainId, networks } from './constants'
 import {
+  CachedProvider,
+  EagerProvider,
+  JsonRpcMiddleware,
+  JsonRpcMiddlewareHandler,
   JsonRpcRouter,
   JsonRpcSender,
-  loggingProviderMiddleware,
-  EagerProvider,
   SingleflightMiddleware,
-  CachedProvider,
-  JsonRpcMiddleware,
-  JsonRpcMiddlewareHandler
+  loggingProviderMiddleware
 } from './json-rpc'
-import { ChainId, networks } from './constants'
 
 export interface JsonRpcProviderOptions {
   // ..

@@ -1,5 +1,6 @@
 import { v1, v2 } from '@0xsequence/core'
 import { ethers } from 'ethers'
+
 import { maxForBits, randomBigNumber, randomBool } from '../utils'
 
 export function genRandomV1Config(

@@ -1,23 +1,25 @@
 import { BigNumberish, ethers } from 'ethers'
+
+import * as base from '../commons/signature'
 import { isValidSignature, recoverSigner, tryRecoverSigner } from '../commons/signer'
+
+import { hashSetImageHash } from './chained'
 import {
+  Leaf,
+  NodeLeaf,
+  SignerLeaf,
+  Topology,
+  WalletConfig,
+  decodeSignerLeaf,
   hashNode,
+  imageHash,
+  isEncodedSignerLeaf,
   isNestedLeaf,
   isNode,
   isNodeLeaf,
   isSignerLeaf,
-  isSubdigestLeaf,
-  Leaf,
-  WalletConfig,
-  SignerLeaf,
-  Topology,
-  imageHash,
-  NodeLeaf,
-  decodeSignerLeaf,
-  isEncodedSignerLeaf
+  isSubdigestLeaf
 } from './config'
-import * as base from '../commons/signature'
-import { hashSetImageHash } from './chained'
 
 export enum SignatureType {
   Legacy = 0,

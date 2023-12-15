@@ -1,14 +1,15 @@
 import { providers } from 'ethers'
+
 import {
+  JsonRpcFetchFunc,
+  JsonRpcHandler,
   JsonRpcRequest,
+  JsonRpcRequestFunc,
   JsonRpcResponse,
   JsonRpcResponseCallback,
-  JsonRpcHandler,
-  JsonRpcFetchFunc,
-  JsonRpcRequestFunc,
   JsonRpcVersion
 } from './types'
-import { isJsonRpcProvider, isJsonRpcHandler } from './utils'
+import { isJsonRpcHandler, isJsonRpcProvider } from './utils'
 
 type ExternalProvider = providers.ExternalProvider
 

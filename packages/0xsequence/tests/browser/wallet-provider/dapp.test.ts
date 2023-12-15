@@ -1,10 +1,11 @@
 import { commons, v2 } from '@0xsequence/core'
-import { SequenceClient, SequenceProvider, DefaultProviderConfig, MemoryItemStore } from '@0xsequence/provider'
+import { DefaultProviderConfig, MemoryItemStore, SequenceClient, SequenceProvider } from '@0xsequence/provider'
 import { context } from '@0xsequence/tests'
 import { configureLogger } from '@0xsequence/utils'
-import { ethers, TypedDataDomain, TypedDataField } from 'ethers'
-import { test, assert } from '../../utils/assert'
-import { testAccounts, getEOAWallet, sendETH } from '../testutils'
+import { TypedDataDomain, TypedDataField, ethers } from 'ethers'
+
+import { assert, test } from '../../utils/assert'
+import { getEOAWallet, sendETH, testAccounts } from '../testutils'
 
 configureLogger({ logLevel: 'DEBUG', silence: false })
 

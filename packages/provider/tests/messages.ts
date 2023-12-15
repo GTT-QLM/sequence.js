@@ -1,4 +1,5 @@
 import { ethers } from 'ethers'
+
 import { prefixEIP191Message } from '../src/utils'
 
 // Ethereum personal sign: Hello, World!

@@ -1,4 +1,4 @@
-import { JsonRpcHandlerFunc, JsonRpcRequest, JsonRpcResponseCallback, JsonRpcMiddlewareHandler, JsonRpcHandler } from '../types'
+import { JsonRpcHandler, JsonRpcHandlerFunc, JsonRpcMiddlewareHandler, JsonRpcRequest, JsonRpcResponseCallback } from '../types'
 
 export const SignerJsonRpcMethods = [
   'personal_sign',

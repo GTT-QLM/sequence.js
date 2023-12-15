@@ -1,14 +1,15 @@
 import { walletContracts } from '@0xsequence/abi'
 import { commons, universal } from '@0xsequence/core'
 import { WalletSignRequestMetadata } from '@0xsequence/core/src/commons'
-import { migrator, defaults, version } from '@0xsequence/migration'
+import { defaults, migrator, version } from '@0xsequence/migration'
 import { ChainId, NetworkConfig } from '@0xsequence/network'
-import { FeeOption, FeeQuote, isRelayer, Relayer, RpcRelayer } from '@0xsequence/relayer'
+import { FeeOption, FeeQuote, Relayer, RpcRelayer, isRelayer } from '@0xsequence/relayer'
 import { tracker } from '@0xsequence/sessions'
 import { SignatureOrchestrator } from '@0xsequence/signhub'
 import { encodeTypedDataDigest, getEthersConnectionInfo } from '@0xsequence/utils'
 import { Wallet } from '@0xsequence/wallet'
-import { ethers, TypedDataDomain, TypedDataField } from 'ethers'
+import { TypedDataDomain, TypedDataField, ethers } from 'ethers'
+
 import { AccountSigner, AccountSignerOptions } from './signer'
 
 export type AccountStatus = {

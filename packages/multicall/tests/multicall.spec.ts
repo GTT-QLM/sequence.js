@@ -1,24 +1,23 @@
-import { ethers, providers, Signer } from 'ethers'
-import * as Ganache from 'ganache'
-import { CallReceiverMock } from '@0xsequence/wallet-contracts'
-import { JsonRpcRouter, JsonRpcExternalProvider } from '@0xsequence/network'
-
-import chaiAsPromised from 'chai-as-promised'
-import * as chai from 'chai'
-import { MulticallExternalProvider, multicallMiddleware, MulticallProvider } from '../src/providers'
-import { SpyProxy } from './utils'
+import { JsonRpcExternalProvider, JsonRpcRouter } from '@0xsequence/network'
 import { getRandomInt } from '@0xsequence/utils'
+import { CallReceiverMock } from '@0xsequence/wallet-contracts'
+import * as chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+import { Signer, ethers, providers } from 'ethers'
+import * as Ganache from 'ganache'
+import Web3 from 'web3'
+
 import { JsonRpcMethod } from '../src/constants'
-import { MulticallOptions, Multicall } from '../src/multicall'
+import { Multicall, MulticallOptions } from '../src/multicall'
+import { MulticallExternalProvider, MulticallProvider, multicallMiddleware } from '../src/providers'
 
-const { JsonRpcEngine } = require('json-rpc-engine')
-
-const { providerAsMiddleware, providerFromEngine } = require('eth-json-rpc-middleware')
+import { SpyProxy } from './utils'
 
 const CallReceiverMockArtifact = require('@0xsequence/wallet-contracts/artifacts/contracts/mocks/CallReceiverMock.sol/CallReceiverMock.json')
 const SequenceUtilsArtifact = require('@0xsequence/wallet-contracts/artifacts/contracts/modules/utils/SequenceUtils.sol/SequenceUtils.json')
+const { providerAsMiddleware, providerFromEngine } = require('eth-json-rpc-middleware')
+const { JsonRpcEngine } = require('json-rpc-engine')
 
-import Web3 from 'web3'
 const { expect } = chai.use(chaiAsPromised)
 
 const GANACHE_PORT = 38546

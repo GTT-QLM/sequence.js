@@ -1,4 +1,5 @@
 import { ethers } from 'ethers'
+
 import { isValidEIP1271Signature } from './validateEIP1271'
 
 export enum SigType {

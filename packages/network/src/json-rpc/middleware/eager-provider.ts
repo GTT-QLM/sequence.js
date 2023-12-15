@@ -1,6 +1,7 @@
 import { commons } from '@0xsequence/core'
 import { ethers } from 'ethers'
-import { JsonRpcHandlerFunc, JsonRpcRequest, JsonRpcResponseCallback, JsonRpcResponse, JsonRpcMiddlewareHandler } from '../types'
+
+import { JsonRpcHandlerFunc, JsonRpcMiddlewareHandler, JsonRpcRequest, JsonRpcResponse, JsonRpcResponseCallback } from '../types'
 
 // EagerProvider will eagerly respond to a provider request from pre-initialized data values.
 //

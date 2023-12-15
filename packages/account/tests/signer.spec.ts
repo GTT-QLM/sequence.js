@@ -5,6 +5,7 @@ import { FeeOption, FeeQuote, LocalRelayer, LocalRelayerOptions, Relayer, proto 
 import { tracker, trackers } from '@0xsequence/sessions'
 import { Orchestrator } from '@0xsequence/signhub'
 import * as utils from '@0xsequence/tests'
+import { createERC20 } from '@0xsequence/tests/src/tokens/erc20'
 import { Wallet } from '@0xsequence/wallet'
 import * as chai from 'chai'
 import chaiAsPromised from 'chai-as-promised'
@@ -12,8 +13,8 @@ import { ethers } from 'ethers'
 import hardhat from 'hardhat'
 
 import { Account } from '../src/account'
+
 import { now, randomWallet } from './account.spec'
-import { createERC20 } from '@0xsequence/tests/src/tokens/erc20'
 
 const { expect } = chai.use(chaiAsPromised)
 
@@ -75,9 +76,9 @@ describe('Account signer', () => {
   })
 
   describe('with new account', () => {
-    var account: Account
-    var config: any
-    var accountSigner: ethers.Wallet
+    let account: Account
+    let config: any
+    let accountSigner: ethers.Wallet
 
     beforeEach(async () => {
       accountSigner = randomWallet('Should create a new account')
@@ -210,8 +211,8 @@ describe('Account signer', () => {
         })
 
         describe('select fee', () => {
-          var account: never
-          var getAccount: (feeOptions: FeeOption[], feeQuote: FeeQuote) => Promise<Account>
+          let account: never
+          let getAccount: (feeOptions: FeeOption[], feeQuote: FeeQuote) => Promise<Account>
 
           beforeEach(async () => {
             class LocalRelayerWithFee extends LocalRelayer {
@@ -650,32 +651,34 @@ describe('Account signer', () => {
           // Should have used all spaces
           const wallet = account.walletForStatus(chainId, await account.status(chainId))
 
-          const nonceSpace1 = await wallet.getNonce('0x01').then((r) => ethers.BigNumber.from(r))
-          expect(nonceSpace1.toString()).to.equal("1")
+          const nonceSpace1 = await wallet.getNonce('0x01').then(r => ethers.BigNumber.from(r))
+          expect(nonceSpace1.toString()).to.equal('1')
 
-          const nonceSpace2 = await wallet.getNonce(2).then((r) => ethers.BigNumber.from(r))
-          expect(nonceSpace2.toString()).to.equal("1")
+          const nonceSpace2 = await wallet.getNonce(2).then(r => ethers.BigNumber.from(r))
+          expect(nonceSpace2.toString()).to.equal('1')
 
-          const nonceSpace3 = await wallet.getNonce(randomSpace).then((r) => ethers.BigNumber.from(r))
-          expect(nonceSpace3.toString()).to.equal("1")
+          const nonceSpace3 = await wallet.getNonce(randomSpace).then(r => ethers.BigNumber.from(r))
+          expect(nonceSpace3.toString()).to.equal('1')
 
-          const nonceSpace4 = await wallet.getNonce('0x04').then((r) => ethers.BigNumber.from(r))
-          expect(nonceSpace4.toString()).to.equal("1")
+          const nonceSpace4 = await wallet.getNonce('0x04').then(r => ethers.BigNumber.from(r))
+          expect(nonceSpace4.toString()).to.equal('1')
 
-          const nonceSpace5 = await wallet.getNonce('0xffffffffffffffffffffffffffffffffffffffff').then((r) => ethers.BigNumber.from(r))
-          expect(nonceSpace5.toString()).to.equal("1")
+          const nonceSpace5 = await wallet
+            .getNonce('0xffffffffffffffffffffffffffffffffffffffff')
+            .then(r => ethers.BigNumber.from(r))
+          expect(nonceSpace5.toString()).to.equal('1')
 
           // Unused space should have nonce 0
-          const nonceSpace6 = await wallet.getNonce('0x06').then((r) => ethers.BigNumber.from(r))
-          expect(nonceSpace6.toString()).to.equal("0")
+          const nonceSpace6 = await wallet.getNonce('0x06').then(r => ethers.BigNumber.from(r))
+          expect(nonceSpace6.toString()).to.equal('0')
 
           // Using a space should consume it
           await signer1.sendTransaction({
             to: ethers.Wallet.createRandom().address
           })
 
-          const nonceSpace1b = await wallet.getNonce('0x01').then((r) => ethers.BigNumber.from(r))
-          expect(nonceSpace1b.toString()).to.equal("2")
+          const nonceSpace1b = await wallet.getNonce('0x01').then(r => ethers.BigNumber.from(r))
+          expect(nonceSpace1b.toString()).to.equal('2')
         })
 
         it('should send multiple transactions on multiple nonce spaces at once', async () => {
@@ -747,32 +750,34 @@ describe('Account signer', () => {
           // Should have used all spaces
           const wallet = account.walletForStatus(chainId, await account.status(chainId))
 
-          const nonceSpace2 = await wallet.getNonce(2).then((r) => ethers.BigNumber.from(r))
-          expect(nonceSpace2.toString()).to.equal("2")
+          const nonceSpace2 = await wallet.getNonce(2).then(r => ethers.BigNumber.from(r))
+          expect(nonceSpace2.toString()).to.equal('2')
 
-          const nonceSpace1 = await wallet.getNonce('0x01').then((r) => ethers.BigNumber.from(r))
-          expect(nonceSpace1.toString()).to.equal("2")
+          const nonceSpace1 = await wallet.getNonce('0x01').then(r => ethers.BigNumber.from(r))
+          expect(nonceSpace1.toString()).to.equal('2')
 
-          const nonceSpace3 = await wallet.getNonce(randomSpace).then((r) => ethers.BigNumber.from(r))
-          expect(nonceSpace3.toString()).to.equal("2")
+          const nonceSpace3 = await wallet.getNonce(randomSpace).then(r => ethers.BigNumber.from(r))
+          expect(nonceSpace3.toString()).to.equal('2')
 
-          const nonceSpace4 = await wallet.getNonce('0x04').then((r) => ethers.BigNumber.from(r))
-          expect(nonceSpace4.toString()).to.equal("2")
+          const nonceSpace4 = await wallet.getNonce('0x04').then(r => ethers.BigNumber.from(r))
+          expect(nonceSpace4.toString()).to.equal('2')
 
-          const nonceSpace5 = await wallet.getNonce('0xffffffffffffffffffffffffffffffffffffffff').then((r) => ethers.BigNumber.from(r))
-          expect(nonceSpace5.toString()).to.equal("2")
+          const nonceSpace5 = await wallet
+            .getNonce('0xffffffffffffffffffffffffffffffffffffffff')
+            .then(r => ethers.BigNumber.from(r))
+          expect(nonceSpace5.toString()).to.equal('2')
 
           // Unused space should have nonce 0
-          const nonceSpace6 = await wallet.getNonce('0x06').then((r) => ethers.BigNumber.from(r))
-          expect(nonceSpace6.toString()).to.equal("0")
+          const nonceSpace6 = await wallet.getNonce('0x06').then(r => ethers.BigNumber.from(r))
+          expect(nonceSpace6.toString()).to.equal('0')
 
           // Using a space should consume it
           await signer1.sendTransaction({
             to: ethers.Wallet.createRandom().address
           })
 
-          const nonceSpace1b = await wallet.getNonce('0x01').then((r) => ethers.BigNumber.from(r))
-          expect(nonceSpace1b.toString()).to.equal("3")
+          const nonceSpace1b = await wallet.getNonce('0x01').then(r => ethers.BigNumber.from(r))
+          expect(nonceSpace1b.toString()).to.equal('3')
         })
       })
     })

@@ -1,5 +1,5 @@
-import { ethers } from 'ethers'
 import { commons } from '@0xsequence/core'
+import { ethers } from 'ethers'
 
 export function counterfactualVersion(
   address: string,

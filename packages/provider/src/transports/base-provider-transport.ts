@@ -1,26 +1,25 @@
+import { commons } from '@0xsequence/core'
+import { JsonRpcRequest, JsonRpcResponseCallback, NetworkConfig } from '@0xsequence/network'
+import { logger } from '@0xsequence/utils'
+import { ethers } from 'ethers'
 import { EventEmitter2 as EventEmitter } from 'eventemitter2'
 
 import {
-  ProviderTransport,
-  ProviderMessage,
-  ProviderMessageRequest,
+  ConnectDetails,
   EventType,
-  ProviderEventTypes,
-  ProviderMessageResponse,
-  ProviderMessageResponseCallback,
+  InitState,
   OpenState,
   OpenWalletIntent,
-  ConnectDetails,
-  WalletSession,
+  ProviderEventTypes,
+  ProviderMessage,
+  ProviderMessageRequest,
+  ProviderMessageResponse,
+  ProviderMessageResponseCallback,
   ProviderRpcError,
-  InitState,
-  TypedEventEmitter
+  ProviderTransport,
+  TypedEventEmitter,
+  WalletSession
 } from '../types'
-
-import { NetworkConfig, JsonRpcRequest, JsonRpcResponseCallback } from '@0xsequence/network'
-import { logger } from '@0xsequence/utils'
-import { ethers } from 'ethers'
-import { commons } from '@0xsequence/core'
 
 export const PROVIDER_OPEN_TIMEOUT = 30000 // in ms
 

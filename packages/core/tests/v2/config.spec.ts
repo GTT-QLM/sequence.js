@@ -1,4 +1,5 @@
 import { expect } from 'chai'
+
 import { config } from '../../src/v2'
 
 const sampleTree1: config.Topology = {

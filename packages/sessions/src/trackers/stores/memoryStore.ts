@@ -1,5 +1,6 @@
 import { commons, v1, v2 } from '@0xsequence/core'
 import { ethers } from 'ethers'
+
 import { PlainNested, PlainNode, PlainV2Config, TrackerStore } from '.'
 
 export class MemoryTrackerStore implements TrackerStore {

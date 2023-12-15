@@ -1,5 +1,6 @@
+import { JsonRpcHandlerFunc, JsonRpcMiddleware, JsonRpcRequest, JsonRpcResponseCallback } from '@0xsequence/network'
+
 import { Multicall, MulticallOptions } from '../multicall'
-import { JsonRpcRequest, JsonRpcResponseCallback, JsonRpcHandlerFunc, JsonRpcMiddleware } from '@0xsequence/network'
 
 export const multicallMiddleware =
   (multicall?: Multicall | Partial<MulticallOptions>): JsonRpcMiddleware =>

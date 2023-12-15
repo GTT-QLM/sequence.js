@@ -1,8 +1,9 @@
 import { Account } from '@0xsequence/account'
 import { commons, universal } from '@0xsequence/core'
-import { signers, Status } from '@0xsequence/signhub'
-import { encodeTypedDataDigest, TypedData } from '@0xsequence/utils'
-import { BytesLike, ethers, TypedDataDomain } from 'ethers'
+import { Status, signers } from '@0xsequence/signhub'
+import { TypedData, encodeTypedDataDigest } from '@0xsequence/utils'
+import { BytesLike, TypedDataDomain, ethers } from 'ethers'
+
 import { AuthMethodsReturn, Guard, RecoveryCode as GuardRecoveryCode } from './guard.gen'
 
 const fetch = typeof global === 'object' ? global.fetch : window.fetch

@@ -1,18 +1,18 @@
 import { Account, AccountStatus } from '@0xsequence/account'
-import { signAuthorization, AuthorizationOptions } from '@0xsequence/auth'
+import { AuthorizationOptions, signAuthorization } from '@0xsequence/auth'
 import { commons } from '@0xsequence/core'
 import {
   ChainId,
   ChainIdLike,
-  findNetworkConfig,
-  findSupportedNetwork,
   JsonRpcHandler,
   JsonRpcRequest,
   JsonRpcResponse,
   JsonRpcResponseCallback,
-  NetworkConfig
+  NetworkConfig,
+  findNetworkConfig,
+  findSupportedNetwork
 } from '@0xsequence/network'
-import { logger, TypedData } from '@0xsequence/utils'
+import { TypedData, logger } from '@0xsequence/utils'
 import { BigNumber, ethers, providers } from 'ethers'
 import { EventEmitter2 as EventEmitter } from 'eventemitter2'
 

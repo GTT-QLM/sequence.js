@@ -1,4 +1,4 @@
-import { JsonRpcHandlerFunc, JsonRpcRequest, JsonRpcResponse, JsonRpcResponseCallback, JsonRpcMiddlewareHandler } from '../types'
+import { JsonRpcHandlerFunc, JsonRpcMiddlewareHandler, JsonRpcRequest, JsonRpcResponse, JsonRpcResponseCallback } from '../types'
 
 export interface CachedProviderOptions {
   // defaultChainId passes a chainId to provider handler if one isn't passed.

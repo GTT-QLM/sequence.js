@@ -1,8 +1,9 @@
-import { ethers, BytesLike } from 'ethers'
-import { messageIsExemptFromEIP191Prefix } from './eip191exceptions'
 import { AccountStatus } from '@0xsequence/account'
 import { commons } from '@0xsequence/core'
-import { encodeMessageDigest, TypedData, encodeTypedDataDigest } from '@0xsequence/utils'
+import { TypedData, encodeMessageDigest, encodeTypedDataDigest } from '@0xsequence/utils'
+import { BytesLike, ethers } from 'ethers'
+
+import { messageIsExemptFromEIP191Prefix } from './eip191exceptions'
 
 const eip191prefix = ethers.utils.toUtf8Bytes('\x19Ethereum Signed Message:\n')
 

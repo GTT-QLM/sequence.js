@@ -1,7 +1,9 @@
 import { ethers } from 'ethers'
+
 import * as base from '../commons/signature'
-import { AddressMember, WalletConfig } from './config'
 import { isValidSignature, recoverSigner } from '../commons/signer'
+
+import { AddressMember, WalletConfig } from './config'
 
 export enum SignaturePartType {
   EOASignature = 0,

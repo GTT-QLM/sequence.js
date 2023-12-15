@@ -9,11 +9,12 @@ import {
   findNetworkConfig,
   loggingProviderMiddleware
 } from '@0xsequence/network'
-import { MuxTransportTemplate } from './transports'
-import { ItemStore, useBestStore } from './utils'
 import { ethers } from 'ethers'
+
 import { SequenceClient } from './client'
 import { SequenceProvider } from './provider'
+import { MuxTransportTemplate } from './transports'
+import { ItemStore, useBestStore } from './utils'
 
 export interface ProviderConfig {
   // Access key for the project that can be obtained from Sequence Builder on sequence.build

@@ -1,4 +1,4 @@
-import { BigNumber, BigNumberish, BytesLike, utils, providers } from 'ethers'
+import { BigNumber, BigNumberish, BytesLike, providers, utils } from 'ethers'
 
 export async function gethCall(
   provider: providers.JsonRpcProvider,

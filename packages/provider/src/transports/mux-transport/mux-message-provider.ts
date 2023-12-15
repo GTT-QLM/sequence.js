@@ -1,19 +1,19 @@
+import { JsonRpcRequest, JsonRpcResponseCallback } from '@0xsequence/network'
+import { Runtime } from 'webextension-polyfill'
+
 import {
-  ProviderMessage,
-  ProviderTransport,
+  ConnectDetails,
+  OpenWalletIntent,
   ProviderEventTypes,
+  ProviderMessage,
   ProviderMessageRequest,
   ProviderMessageResponse,
-  WalletSession,
-  OpenWalletIntent,
-  ConnectDetails
+  ProviderTransport,
+  WalletSession
 } from '../../types'
-
-import { JsonRpcRequest, JsonRpcResponseCallback } from '@0xsequence/network'
-import { ProxyMessageChannelPort, ProxyMessageProvider } from '../proxy-transport'
-import { Runtime } from 'webextension-polyfill'
-import { UnrealMessageProvider } from '../unreal-transport'
 import { ExtensionMessageProvider } from '../extension-transport'
+import { ProxyMessageChannelPort, ProxyMessageProvider } from '../proxy-transport'
+import { UnrealMessageProvider } from '../unreal-transport'
 import { WindowMessageProvider } from '../window-transport'
 
 export type MuxTransportTemplate = {

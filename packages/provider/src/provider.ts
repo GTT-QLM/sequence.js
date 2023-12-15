@@ -1,10 +1,11 @@
-import { ethers } from 'ethers'
-import { SequenceClient } from './client'
-import { ChainIdLike, NetworkConfig, allNetworks, findNetworkConfig } from '@0xsequence/network'
-import { ConnectDetails, ConnectOptions, EIP1193Provider, OpenWalletIntent, OptionalChainIdLike, WalletSession } from './types'
 import { commons } from '@0xsequence/core'
-import { WalletUtils } from './utils/index'
+import { ChainIdLike, NetworkConfig, allNetworks, findNetworkConfig } from '@0xsequence/network'
+import { ethers } from 'ethers'
+
+import { SequenceClient } from './client'
 import { SequenceSigner, SingleNetworkSequenceSigner } from './signer'
+import { ConnectDetails, ConnectOptions, EIP1193Provider, OpenWalletIntent, OptionalChainIdLike, WalletSession } from './types'
+import { WalletUtils } from './utils/index'
 
 export interface ISequenceProvider {
   readonly _isSequenceProvider: true

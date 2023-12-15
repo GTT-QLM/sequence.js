@@ -1,6 +1,7 @@
 import { commons } from '@0xsequence/core'
-import { signers, Status } from '@0xsequence/signhub'
+import { Status, signers } from '@0xsequence/signhub'
 import { ethers } from 'ethers'
+
 import { Account } from '../account'
 
 export type MetadataWithChainId = {

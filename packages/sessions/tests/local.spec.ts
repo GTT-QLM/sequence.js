@@ -1,15 +1,13 @@
-import hardhat from 'hardhat'
-import * as chai from 'chai'
-import * as utils from '@0xsequence/tests'
-
-import { trackers, tracker } from '../src/index'
 import { commons, universal, v2 } from '@0xsequence/core'
-import { ethers } from 'ethers'
-import { Wallet } from '@0xsequence/wallet'
 import { Orchestrator } from '@0xsequence/signhub'
+import * as utils from '@0xsequence/tests'
+import { Wallet } from '@0xsequence/wallet'
+import * as chai from 'chai'
+import { ethers } from 'ethers'
+import 'fake-indexeddb/auto' // This is a hack to get around the fact that indexedDB is not available in nodejs
+import hardhat from 'hardhat'
 
-// This is a hack to get around the fact that indexedDB is not available in nodejs
-import 'fake-indexeddb/auto'
+import { tracker, trackers } from '../src/index'
 
 const { expect } = chai
 

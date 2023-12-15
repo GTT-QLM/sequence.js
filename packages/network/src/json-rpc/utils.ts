@@ -1,4 +1,5 @@
 import { providers } from 'ethers'
+
 import { JsonRpcHandler } from './types'
 
 export function isJsonRpcProvider(cand: any): cand is providers.JsonRpcProvider {

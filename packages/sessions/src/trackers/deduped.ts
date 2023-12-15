@@ -1,9 +1,11 @@
 import { commons } from '@0xsequence/core'
 import { migrator } from '@0xsequence/migration'
 import { BigNumber, BigNumberish, ethers } from 'ethers'
+
 import { ConfigTracker, PresignedConfig, PresignedConfigLink } from '../tracker'
-import { PromiseCache } from './promise-cache'
+
 import { LocalConfigTracker } from './local'
+import { PromiseCache } from './promise-cache'
 
 export function isDedupedTracker(tracker: any): tracker is DedupedTracker {
   return tracker instanceof DedupedTracker

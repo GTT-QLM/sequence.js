@@ -1,5 +1,5 @@
-import { expect } from 'chai'
 import { jwtDecodeClaims } from '@0xsequence/utils'
+import { expect } from 'chai'
 
 describe('jwt-decode', function () {
   it('decode', () => {

@@ -1,5 +1,6 @@
-import { ethers } from 'ethers'
 import { commons } from '@0xsequence/core'
+import { ethers } from 'ethers'
+
 import { Status } from '../orchestrator'
 
 export interface SapientSigner {

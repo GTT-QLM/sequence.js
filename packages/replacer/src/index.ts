@@ -1,7 +1,8 @@
-import { ethers } from 'ethers'
 import { walletContracts } from '@0xsequence/abi'
-import { isIPFS, useGateway } from './ipfs'
 import { commons } from '@0xsequence/core'
+import { ethers } from 'ethers'
+
+import { isIPFS, useGateway } from './ipfs'
 
 export * from './cached'
 

@@ -1,4 +1,5 @@
 import { ethers } from 'ethers'
+
 import { isContract } from '../utils'
 
 // These are the Sequence v1 contracts

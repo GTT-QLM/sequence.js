@@ -1,7 +1,8 @@
-import { OpenWalletIntent, ProviderMessage, InitState, EventType, WindowSessionParams } from '../../types'
-import { BaseProviderTransport } from '../base-provider-transport'
-import { logger, base64EncodeObject } from '@0xsequence/utils'
+import { base64EncodeObject, logger } from '@0xsequence/utils'
+
+import { EventType, InitState, OpenWalletIntent, ProviderMessage, WindowSessionParams } from '../../types'
 import { isBrowserExtension, isUnityPlugin } from '../../utils'
+import { BaseProviderTransport } from '../base-provider-transport'
 
 // ..
 let registeredWindowMessageProvider: WindowMessageProvider | undefined

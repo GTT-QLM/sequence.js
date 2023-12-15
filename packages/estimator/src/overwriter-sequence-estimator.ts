@@ -1,9 +1,10 @@
-import { OverwriterEstimator } from './overwriter-estimator'
 import { walletContracts } from '@0xsequence/abi'
-import { ethers, utils } from 'ethers'
-import { Estimator } from './estimator'
 import { commons, v2 } from '@0xsequence/core'
+import { ethers, utils } from 'ethers'
+
 import { mainModuleGasEstimation } from './builds'
+import { Estimator } from './estimator'
+import { OverwriterEstimator } from './overwriter-estimator'
 
 export class OverwriterSequenceEstimator implements Estimator {
   constructor(public estimator: OverwriterEstimator) {}

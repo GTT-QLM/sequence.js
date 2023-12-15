@@ -7,6 +7,7 @@ import * as chai from 'chai'
 import chaiAsPromised from 'chai-as-promised'
 import { ethers } from 'ethers'
 import hardhat from 'hardhat'
+
 import { LocalRelayer } from '../src'
 
 const CallReceiverMockArtifact = require('@0xsequence/wallet-contracts/artifacts/contracts/mocks/CallReceiverMock.sol/CallReceiverMock.json')

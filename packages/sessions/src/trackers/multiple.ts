@@ -1,7 +1,9 @@
-import { ConfigTracker, PresignedConfig, PresignedConfigLink } from '../tracker'
+import { commons, universal } from '@0xsequence/core'
 import { migrator } from '@0xsequence/migration'
 import { BigNumber, BigNumberish, ethers } from 'ethers'
-import { commons, universal } from '@0xsequence/core'
+
+import { ConfigTracker, PresignedConfig, PresignedConfigLink } from '../tracker'
+
 import { LocalConfigTracker } from './local'
 
 export function raceUntil<T>(promises: Promise<T>[], fallback: T, evalRes: (val: T) => boolean): Promise<T> {

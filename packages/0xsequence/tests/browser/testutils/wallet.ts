@@ -1,4 +1,4 @@
-import { ethers, Wallet as EOAWallet } from 'ethers'
+import { Wallet as EOAWallet, ethers } from 'ethers'
 
 export const sendETH = (
   eoaWallet: EOAWallet,

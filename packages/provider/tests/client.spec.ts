@@ -1,12 +1,14 @@
-import { expect } from 'chai'
-import { OpenWalletIntent, ProviderEventTypes, ProviderTransport, SequenceClient, TypedEventEmitter, useBestStore } from '../src'
-import { JsonRpcRequest, JsonRpcResponse, JsonRpcResponseCallback, allNetworks } from '@0xsequence/network'
 import EventEmitter from 'events'
+
 import { commons, v1, v2 } from '@0xsequence/core'
-import { ethers } from 'ethers'
+import { JsonRpcRequest, JsonRpcResponse, JsonRpcResponseCallback, allNetworks } from '@0xsequence/network'
 import { TypedData } from '@0xsequence/utils'
-import { ExtendedTransactionRequest } from '../src/extended'
+import { expect } from 'chai'
+import { ethers } from 'ethers'
+
 import packageJson from '../package.json'
+import { OpenWalletIntent, ProviderEventTypes, ProviderTransport, SequenceClient, TypedEventEmitter, useBestStore } from '../src'
+import { ExtendedTransactionRequest } from '../src/extended'
 
 const basicMockTransport = {
   on: () => {},

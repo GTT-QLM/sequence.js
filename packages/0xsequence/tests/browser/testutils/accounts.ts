@@ -1,4 +1,4 @@
-import { ethers, Wallet as EOAWallet, providers } from 'ethers'
+import { Wallet as EOAWallet, ethers, providers } from 'ethers'
 
 // testAccounts with 10000 ETH each
 export const testAccounts = [

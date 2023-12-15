@@ -1,6 +1,8 @@
-import { OpenWalletIntent, ProviderMessage, InitState, WindowSessionParams } from '../../types'
-import { BaseProviderTransport } from '../base-provider-transport'
 import { base64EncodeObject } from '@0xsequence/utils'
+
+import { InitState, OpenWalletIntent, ProviderMessage, WindowSessionParams } from '../../types'
+import { BaseProviderTransport } from '../base-provider-transport'
+
 import { overrideLogs } from './overridelogs'
 
 let registeredUnrealMessageProvider: UnrealMessageProvider | undefined

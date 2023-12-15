@@ -1,8 +1,9 @@
+import { Runtime } from 'webextension-polyfill'
+
 import { InitState, OpenWalletIntent, ProviderMessage } from '../../types'
 import { BaseProviderTransport } from '../base-provider-transport'
-import { CHANNEL_ID } from './extension-message-handler'
 
-import { Runtime } from 'webextension-polyfill'
+import { CHANNEL_ID } from './extension-message-handler'
 
 export class ExtensionMessageProvider extends BaseProviderTransport {
   constructor(runtime: Runtime.Static) {

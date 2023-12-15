@@ -1,8 +1,9 @@
-import { isValidSignature, prefixEIP191Message, WindowMessageProvider } from '@0xsequence/provider'
+import { WindowMessageProvider, isValidSignature, prefixEIP191Message } from '@0xsequence/provider'
 import { context } from '@0xsequence/tests'
 import { configureLogger, encodeMessageDigest, packMessageData } from '@0xsequence/utils'
 import { ethers } from 'ethers'
-import { test, assert } from '../../utils/assert'
+
+import { assert, test } from '../../utils/assert'
 
 configureLogger({ logLevel: 'DEBUG', silence: false })
 

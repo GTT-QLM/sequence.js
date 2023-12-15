@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 import { ethers } from 'ethers'
-import { decodeSignature, encodeSignature, SignaturePartType, SignatureType } from '../../src/v2/signature'
+
+import { SignaturePartType, SignatureType, decodeSignature, encodeSignature } from '../../src/v2/signature'
 
 const sampleSignature1 =
   '0x0001636911b800019fa7b7e8ed25088c413074818ac10ab3bbcddb120bbec85083f3ba254e5547d953fe615a6474fd365326244dedd7afa3911ad39c956ca096d721064d6b29055d1b02'

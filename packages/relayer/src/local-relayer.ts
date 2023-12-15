@@ -1,8 +1,10 @@
-import { Signer as AbstractSigner, providers, BytesLike } from 'ethers'
-import { logger } from '@0xsequence/utils'
-import { FeeOption, FeeQuote, Relayer } from '.'
-import { ProviderRelayer, ProviderRelayerOptions } from './provider-relayer'
 import { commons } from '@0xsequence/core'
+import { logger } from '@0xsequence/utils'
+import { Signer as AbstractSigner, BytesLike, providers } from 'ethers'
+
+import { ProviderRelayer, ProviderRelayerOptions } from './provider-relayer'
+
+import { FeeOption, FeeQuote, Relayer } from '.'
 
 export type LocalRelayerOptions = Omit<ProviderRelayerOptions, 'provider'> & {
   signer: AbstractSigner

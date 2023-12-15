@@ -1,6 +1,7 @@
 import { commons, universal } from '@0xsequence/core'
 import { migrator } from '@0xsequence/migration'
 import { ethers } from 'ethers'
+
 import { ConfigTracker, PresignedConfig, PresignedConfigLink } from '../tracker'
 
 export class CachedTracker implements migrator.PresignedMigrationTracker, ConfigTracker {

@@ -1,9 +1,11 @@
 import { commons, universal, v1, v2 } from '@0xsequence/core'
 import { migration, migrator } from '@0xsequence/migration'
-import { ethers } from 'ethers'
 import { CachedEIP5719 } from '@0xsequence/replacer'
+import { ethers } from 'ethers'
+
 import { ConfigTracker, PresignedConfig, PresignedConfigLink } from '../tracker'
-import { isPlainNested, isPlainNode, isPlainV2Config, MemoryTrackerStore, PlainNested, PlainNode, TrackerStore } from './stores'
+
+import { MemoryTrackerStore, PlainNested, PlainNode, TrackerStore, isPlainNested, isPlainNode, isPlainV2Config } from './stores'
 
 export class LocalConfigTracker implements ConfigTracker, migrator.PresignedMigrationTracker {
   private cachedEIP5719: CachedEIP5719

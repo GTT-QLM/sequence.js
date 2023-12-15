@@ -1,17 +1,19 @@
 import * as fs from 'fs'
-import { ethers, ContractFactory, ContractTransaction } from 'ethers'
-import { promisify, isNode } from '@0xsequence/utils'
-import { UniversalDeployer2__factory } from './typings/contracts'
+
+import { isNode, promisify } from '@0xsequence/utils'
+import { ContractFactory, ContractTransaction, ethers } from 'ethers'
+
 import {
   EOA_UNIVERSAL_DEPLOYER_ADDRESS,
-  UNIVERSAL_DEPLOYER_ADDRESS,
   UNIVERSAL_DEPLOYER_2_ADDRESS,
+  UNIVERSAL_DEPLOYER_2_BYTECODE,
+  UNIVERSAL_DEPLOYER_ADDRESS,
   UNIVERSAL_DEPLOYER_FUNDING,
-  UNIVERSAL_DEPLOYER_TX,
-  UNIVERSAL_DEPLOYER_2_BYTECODE
+  UNIVERSAL_DEPLOYER_TX
 } from './constants'
 import { ContractInstance } from './types'
-import { createLogger, Logger } from './utils/logger'
+import { UniversalDeployer2__factory } from './typings/contracts'
+import { Logger, createLogger } from './utils/logger'
 
 let prompt: Logger
 createLogger().then(logger => (prompt = logger))

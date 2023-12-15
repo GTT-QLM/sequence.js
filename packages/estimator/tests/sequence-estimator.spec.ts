@@ -1,20 +1,17 @@
-import { CallReceiverMock, HookCallerMock } from '@0xsequence/wallet-contracts'
-
+import { commons, v2 } from '@0xsequence/core'
 import { LocalRelayer } from '@0xsequence/relayer'
+import { Orchestrator } from '@0xsequence/signhub'
+import { context } from '@0xsequence/tests'
+import { configureLogger } from '@0xsequence/utils'
+import { SequenceOrchestratorWrapper, Wallet, WalletV2 } from '@0xsequence/wallet'
+import { encodeData } from '@0xsequence/wallet/tests/utils'
+import { CallReceiverMock, HookCallerMock } from '@0xsequence/wallet-contracts'
+import * as chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
 import { ethers } from 'ethers'
 
-import { configureLogger } from '@0xsequence/utils'
-import { commons, v2 } from '@0xsequence/core'
-
-import chaiAsPromised from 'chai-as-promised'
-import * as chai from 'chai'
-
-import { SequenceOrchestratorWrapper, Wallet, WalletV2 } from '@0xsequence/wallet'
-import { OverwriterSequenceEstimator } from '../src'
 import { OverwriterEstimator } from '../dist/0xsequence-estimator.cjs'
-import { encodeData } from '@0xsequence/wallet/tests/utils'
-import { context } from '@0xsequence/tests'
-import { Orchestrator } from '@0xsequence/signhub'
+import { OverwriterSequenceEstimator } from '../src'
 
 const CallReceiverMockArtifact = require('@0xsequence/wallet-contracts/artifacts/contracts/mocks/CallReceiverMock.sol/CallReceiverMock.json')
 const HookCallerMockArtifact = require('@0xsequence/wallet-contracts/artifacts/contracts/mocks/HookCallerMock.sol/HookCallerMock.json')

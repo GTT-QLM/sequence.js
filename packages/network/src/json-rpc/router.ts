@@ -1,10 +1,10 @@
 import {
-  JsonRpcHandlerFunc,
-  JsonRpcRequest,
-  JsonRpcResponseCallback,
   JsonRpcHandler,
+  JsonRpcHandlerFunc,
   JsonRpcMiddleware,
-  JsonRpcMiddlewareHandler
+  JsonRpcMiddlewareHandler,
+  JsonRpcRequest,
+  JsonRpcResponseCallback
 } from './types'
 
 export class JsonRpcRouter implements JsonRpcHandler {

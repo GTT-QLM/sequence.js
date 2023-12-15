@@ -1,6 +1,7 @@
+import { InitState, ProviderMessage } from '../../types'
 import { BaseWalletTransport } from '../base-wallet-transport'
 import { WalletRequestHandler } from '../wallet-request-handler'
-import { InitState, ProviderMessage } from '../../types'
+
 import { ProxyMessageChannelPort } from './proxy-message-channel'
 
 export class ProxyMessageHandler extends BaseWalletTransport {

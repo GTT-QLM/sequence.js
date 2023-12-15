@@ -1,5 +1,8 @@
-import chaiAsPromised from 'chai-as-promised'
 import * as chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
+import { ethers } from 'ethers'
+
+import { trimEIP191Prefix } from '../src/utils'
 
 import {
   trimEIP191Prefix_test1_prefixed,
@@ -13,8 +16,6 @@ import {
   trimEIP191Prefix_test5_prefixed,
   trimEIP191Prefix_test5_raw
 } from './messages'
-import { trimEIP191Prefix } from '../src/utils'
-import { ethers } from 'ethers'
 const { expect } = chai.use(chaiAsPromised)
 
 describe('trimming eip191prefix', () => {

@@ -1,15 +1,15 @@
-import { ethers } from 'ethers'
-import { WalletRequestHandler, WindowMessageHandler } from '@0xsequence/provider'
 import { Account } from '@0xsequence/account'
 import { NetworkConfig } from '@0xsequence/network'
+import { WalletRequestHandler, WindowMessageHandler } from '@0xsequence/provider'
 import { LocalRelayer } from '@0xsequence/relayer'
-import { configureLogger } from '@0xsequence/utils'
-
-import { testAccounts, getEOAWallet } from '../testutils'
-import { test, assert } from '../../utils/assert'
-import * as utils from '@0xsequence/tests'
-import { Orchestrator } from '@0xsequence/signhub'
 import { trackers } from '@0xsequence/sessions'
+import { Orchestrator } from '@0xsequence/signhub'
+import * as utils from '@0xsequence/tests'
+import { configureLogger } from '@0xsequence/utils'
+import { ethers } from 'ethers'
+
+import { assert, test } from '../../utils/assert'
+import { getEOAWallet, testAccounts } from '../testutils'
 
 configureLogger({ logLevel: 'DEBUG', silence: false })
 

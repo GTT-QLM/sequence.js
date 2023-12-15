@@ -1,9 +1,9 @@
 import {
   JsonRpcHandlerFunc,
-  JsonRpcRequest,
-  JsonRpcResponseCallback,
   JsonRpcMiddleware,
-  JsonRpcMiddlewareHandler
+  JsonRpcMiddlewareHandler,
+  JsonRpcRequest,
+  JsonRpcResponseCallback
 } from '../types'
 
 export class AllowProvider implements JsonRpcMiddlewareHandler {

@@ -1,16 +1,18 @@
+import { base64DecodeObject, logger } from '@0xsequence/utils'
+
 import {
-  ProviderMessageRequest,
-  ProviderMessage,
   EventType,
   InitState,
-  WindowSessionParams,
   OpenWalletIntent,
+  ProviderMessage,
+  ProviderMessageRequest,
   ProviderRpcError,
-  TransportSession
+  TransportSession,
+  WindowSessionParams
 } from '../../types'
-import { WalletRequestHandler } from '../wallet-request-handler'
 import { BaseWalletTransport } from '../base-wallet-transport'
-import { logger, base64DecodeObject } from '@0xsequence/utils'
+import { WalletRequestHandler } from '../wallet-request-handler'
+
 import { overrideLogs } from './overridelogs'
 
 // all lowercase is an annoying limitation of Unreal CEF BindUObject

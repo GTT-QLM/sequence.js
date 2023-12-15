@@ -1,26 +1,25 @@
+import { AuthorizationOptions } from '@0xsequence/auth'
+import { commons } from '@0xsequence/core'
+import { JsonRpcRequest, JsonRpcResponseCallback, NetworkConfig, findSupportedNetwork } from '@0xsequence/network'
+import { logger, sanitizeAlphanumeric, sanitizeHost, sanitizeNumberString } from '@0xsequence/utils'
 import { ethers } from 'ethers'
+
 import {
-  WalletTransport,
+  ConnectDetails,
+  EventType,
+  InitState,
   ProviderMessage,
   ProviderMessageRequest,
-  EventType,
   ProviderMessageResponse,
   ProviderRpcError,
-  InitState,
-  ConnectDetails,
+  TransportSession,
   WalletSession,
-  TransportSession
+  WalletTransport
 } from '../types'
-
-import { WalletRequestHandler } from './wallet-request-handler'
-
-import { NetworkConfig, JsonRpcRequest, JsonRpcResponseCallback, findSupportedNetwork } from '@0xsequence/network'
-import { logger, sanitizeAlphanumeric, sanitizeHost, sanitizeNumberString } from '@0xsequence/utils'
-import { AuthorizationOptions } from '@0xsequence/auth'
+import { isBrowserExtension, useBestStore } from '../utils'
 
 import { PROVIDER_OPEN_TIMEOUT } from './base-provider-transport'
-import { isBrowserExtension, useBestStore } from '../utils'
-import { commons } from '@0xsequence/core'
+import { WalletRequestHandler } from './wallet-request-handler'
 
 const TRANSPORT_SESSION_LS_KEY = '@sequence.transportSession'
 

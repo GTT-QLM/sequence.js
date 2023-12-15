@@ -1,8 +1,10 @@
-import { ethers } from 'ethers'
-import { FeeOption, FeeQuote, Relayer, SimulateResult } from '..'
-import * as proto from './relayer.gen'
 import { commons } from '@0xsequence/core'
 import { getEthersConnectionInfo, logger } from '@0xsequence/utils'
+import { ethers } from 'ethers'
+
+import { FeeOption, FeeQuote, Relayer, SimulateResult } from '..'
+
+import * as proto from './relayer.gen'
 
 export { proto }
 

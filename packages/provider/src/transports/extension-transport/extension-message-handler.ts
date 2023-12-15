@@ -1,8 +1,9 @@
-import { WalletRequestHandler } from '../wallet-request-handler'
-import { BaseWalletTransport } from '../base-wallet-transport'
-import { InitState, ProviderMessage } from '../../types'
-import { Runtime } from 'webextension-polyfill'
 import { logger } from '@0xsequence/utils'
+import { Runtime } from 'webextension-polyfill'
+
+import { InitState, ProviderMessage } from '../../types'
+import { BaseWalletTransport } from '../base-wallet-transport'
+import { WalletRequestHandler } from '../wallet-request-handler'
 
 export const CHANNEL_ID = 'sequence-extension-message-handler'
 

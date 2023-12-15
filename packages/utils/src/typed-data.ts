@@ -1,4 +1,4 @@
-import { ethers, TypedDataDomain, TypedDataField } from 'ethers'
+import { TypedDataDomain, TypedDataField, ethers } from 'ethers'
 
 export interface TypedData {
   domain: TypedDataDomain

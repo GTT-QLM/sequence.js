@@ -1,7 +1,8 @@
-import chaiAsPromised from 'chai-as-promised'
 import * as chai from 'chai'
+import chaiAsPromised from 'chai-as-promised'
 
 import { messageIsExemptFromEIP191Prefix } from '../src/eip191exceptions'
+
 import { dclLogin, message1, zeroExV3Order } from './messages'
 const { expect } = chai.use(chaiAsPromised)
 

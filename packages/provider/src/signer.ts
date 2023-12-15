@@ -1,12 +1,12 @@
-import { ethers } from 'ethers'
-
-import { SequenceProvider, SingleNetworkSequenceProvider } from './provider'
-import { SequenceClient } from './client'
 import { commons } from '@0xsequence/core'
 import { ChainIdLike, NetworkConfig } from '@0xsequence/network'
+import { ethers } from 'ethers'
+
+import { SequenceClient } from './client'
+import { SequenceProvider, SingleNetworkSequenceProvider } from './provider'
+import { OptionalChainIdLike, OptionalEIP6492 } from './types'
 import { resolveArrayProperties } from './utils'
 import { WalletUtils } from './utils/index'
-import { OptionalChainIdLike, OptionalEIP6492 } from './types'
 
 export interface ISequenceSigner extends ethers.Signer {
   getProvider(): SequenceProvider

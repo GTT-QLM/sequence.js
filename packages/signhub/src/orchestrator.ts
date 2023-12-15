@@ -1,6 +1,7 @@
-import { ethers } from 'ethers'
 import { commons } from '@0xsequence/core'
-import { isSapientSigner, SapientSigner } from './signers/signer'
+import { ethers } from 'ethers'
+
+import { SapientSigner, isSapientSigner } from './signers/signer'
 import { SignerWrapper } from './signers/wrapper'
 
 export type Status = {

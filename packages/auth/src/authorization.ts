@@ -1,9 +1,10 @@
-import { ethers } from 'ethers'
+import { Account } from '@0xsequence/account'
 import { ETHAuth, Proof } from '@0xsequence/ethauth'
 import { ChainIdLike, toChainIdNumber } from '@0xsequence/network'
 import { TypedData } from '@0xsequence/utils'
 import { Signer } from '@0xsequence/wallet'
-import { Account } from '@0xsequence/account'
+import { ethers } from 'ethers'
+
 import { DEFAULT_SESSION_EXPIRATION } from './services'
 
 export interface AuthorizationOptions {

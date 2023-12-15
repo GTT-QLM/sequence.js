@@ -1,7 +1,9 @@
-import { providers } from 'ethers'
-import { JsonRpcHandlerFunc, JsonRpcRequest, JsonRpcResponseCallback, JsonRpcMiddlewareHandler } from '../types'
-import { SignerJsonRpcMethods } from './signing-provider'
 import { logger } from '@0xsequence/utils'
+import { providers } from 'ethers'
+
+import { JsonRpcHandlerFunc, JsonRpcMiddlewareHandler, JsonRpcRequest, JsonRpcResponseCallback } from '../types'
+
+import { SignerJsonRpcMethods } from './signing-provider'
 
 export class PublicProvider implements JsonRpcMiddlewareHandler {
   private privateJsonRpcMethods = ['net_version', 'eth_chainId', 'eth_accounts', ...SignerJsonRpcMethods]

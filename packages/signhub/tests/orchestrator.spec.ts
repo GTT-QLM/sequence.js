@@ -1,7 +1,8 @@
+import { commons } from '@0xsequence/core'
 import * as chai from 'chai'
 import { ethers } from 'ethers'
-import { commons } from '@0xsequence/core'
-import { isSignerStatusPending, Orchestrator, SignerState, Status } from '../src'
+
+import { Orchestrator, SignerState, Status, isSignerStatusPending } from '../src'
 import { SapientSigner } from '../src/signers'
 
 const { expect } = chai

@@ -1,5 +1,6 @@
-import { JsonRpcHandlerFunc, JsonRpcRequest, JsonRpcResponse, JsonRpcResponseCallback, JsonRpcMiddleware } from '../types'
 import { logger } from '@0xsequence/utils'
+
+import { JsonRpcHandlerFunc, JsonRpcMiddleware, JsonRpcRequest, JsonRpcResponse, JsonRpcResponseCallback } from '../types'
 
 // TODO: rename to loggerMiddleware
 export const loggingProviderMiddleware: JsonRpcMiddleware = (next: JsonRpcHandlerFunc) => {

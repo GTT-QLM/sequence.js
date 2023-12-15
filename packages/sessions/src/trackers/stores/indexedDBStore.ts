@@ -1,8 +1,8 @@
 import { commons, v1, v2 } from '@0xsequence/core'
 import { ethers } from 'ethers'
-import { PlainNested, PlainNode, PlainV2Config, TrackerStore } from '.'
-
 import { DBSchema, IDBPDatabase, openDB } from 'idb'
+
+import { PlainNested, PlainNode, PlainV2Config, TrackerStore } from '.'
 
 export interface LocalTrackerDBSchema extends DBSchema {
   configs: {

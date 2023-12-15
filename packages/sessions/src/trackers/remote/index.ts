@@ -1,7 +1,9 @@
 import { commons, universal, v1, v2 } from '@0xsequence/core'
 import { migrator } from '@0xsequence/migration'
 import { ethers } from 'ethers'
+
 import { ConfigTracker, PresignedConfig, PresignedConfigLink } from '../../tracker'
+
 import { Sessions, SignatureType, Transaction } from './sessions.gen'
 
 export class RemoteConfigTracker implements ConfigTracker, migrator.PresignedMigrationTracker {

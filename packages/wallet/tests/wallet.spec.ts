@@ -1,12 +1,12 @@
-import hardhat from 'hardhat'
-import * as chai from 'chai'
-
 import { commons, v1, v2 } from '@0xsequence/core'
-import { context } from '@0xsequence/tests'
-import { ethers } from 'ethers'
-import { SequenceOrchestratorWrapper, Wallet } from '../src/index'
-import { Orchestrator, SignatureOrchestrator, signers as hubsigners } from '@0xsequence/signhub'
 import { LocalRelayer } from '@0xsequence/relayer'
+import { Orchestrator, SignatureOrchestrator, signers as hubsigners } from '@0xsequence/signhub'
+import { context } from '@0xsequence/tests'
+import * as chai from 'chai'
+import { ethers } from 'ethers'
+import hardhat from 'hardhat'
+
+import { SequenceOrchestratorWrapper, Wallet } from '../src/index'
 
 const { expect } = chai
 

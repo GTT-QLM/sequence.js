@@ -1,8 +1,8 @@
-import { ethers } from 'ethers'
-import { test, assert } from '../../utils/assert'
-
-import { configureLogger } from '@0xsequence/utils'
 import { JsonRpcProvider, loggingProviderMiddleware } from '@0xsequence/network'
+import { configureLogger } from '@0xsequence/utils'
+import { ethers } from 'ethers'
+
+import { assert, test } from '../../utils/assert'
 
 configureLogger({ logLevel: 'DEBUG', silence: false })
 

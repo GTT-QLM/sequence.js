@@ -1,7 +1,8 @@
 import { DefaultProviderConfig, MemoryItemStore, SequenceClient, SequenceProvider } from '@0xsequence/provider'
 import { configureLogger } from '@0xsequence/utils'
-import { ethers, TypedDataDomain, TypedDataField } from 'ethers'
-import { test, assert } from '../../utils/assert'
+import { TypedDataDomain, TypedDataField, ethers } from 'ethers'
+
+import { assert, test } from '../../utils/assert'
 
 configureLogger({ logLevel: 'DEBUG', silence: false })
 

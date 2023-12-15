@@ -1,4 +1,4 @@
-import { JsonRpcHandlerFunc, JsonRpcRequest, JsonRpcResponse, JsonRpcResponseCallback, JsonRpcMiddlewareHandler } from '../types'
+import { JsonRpcHandlerFunc, JsonRpcMiddlewareHandler, JsonRpcRequest, JsonRpcResponse, JsonRpcResponseCallback } from '../types'
 
 export class SingleflightMiddleware implements JsonRpcMiddlewareHandler {
   private singleflightJsonRpcMethods = [

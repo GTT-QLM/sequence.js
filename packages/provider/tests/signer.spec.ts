@@ -1,4 +1,8 @@
+import { JsonRpcRequest, JsonRpcResponse, allNetworks } from '@0xsequence/network'
+import { TypedData } from '@0xsequence/utils'
+import { expect } from 'chai'
 import { ethers } from 'ethers'
+
 import {
   ConnectOptions,
   OpenWalletIntent,
@@ -11,10 +15,7 @@ import {
   SingleNetworkSequenceProvider,
   SingleNetworkSequenceSigner
 } from '../src'
-import { expect } from 'chai'
-import { JsonRpcRequest, JsonRpcResponse, allNetworks } from '@0xsequence/network'
 import { ExtendedTransactionRequest } from '../src/extended'
-import { TypedData } from '@0xsequence/utils'
 
 const hardhat1Provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9595')
 const hardhat2Provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:8595')

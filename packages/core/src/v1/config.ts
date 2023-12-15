@@ -1,8 +1,10 @@
-import { ethers } from 'ethers'
 import { walletContracts } from '@0xsequence/abi'
+import { ethers } from 'ethers'
+
 import { commons } from '..'
-import { encodeSigners } from './signature'
 import { SimpleConfig } from '../commons/config'
+
+import { encodeSigners } from './signature'
 
 export type AddressMember = {
   weight: ethers.BigNumberish

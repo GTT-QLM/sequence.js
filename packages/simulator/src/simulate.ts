@@ -1,6 +1,7 @@
-import { BigNumber, providers, utils } from 'ethers'
-import { gethCall } from './geth-call'
 import { commons } from '@0xsequence/core'
+import { BigNumber, providers, utils } from 'ethers'
+
+import { gethCall } from './geth-call'
 
 const simulatorArtifact = require('@0xsequence/wallet-contracts/artifacts/contracts/modules/MainModuleGasEstimation.sol/MainModuleGasEstimation.json')
 const simulatorInterface = new utils.Interface(simulatorArtifact.abi)

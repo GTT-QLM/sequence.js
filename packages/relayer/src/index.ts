@@ -1,7 +1,7 @@
-import { ethers, providers } from 'ethers'
-import { proto } from './rpc-relayer'
-
 import { commons } from '@0xsequence/core'
+import { ethers, providers } from 'ethers'
+
+import { proto } from './rpc-relayer'
 
 export interface Relayer {
   // simulate returns the execution results for a list of transactions.

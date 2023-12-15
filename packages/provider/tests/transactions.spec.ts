@@ -1,5 +1,6 @@
 import { commons } from '@0xsequence/core'
 import { expect } from 'chai'
+
 import { validateTransactionRequest } from '../src/transactions'
 
 const self = '0x5e1f5e1f5e1f5e1f5e1f5e1f5e1f5e1f5e1f5e1f'

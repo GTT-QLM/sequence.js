@@ -1,6 +1,8 @@
 import { walletContracts } from '@0xsequence/abi'
 import { ethers } from 'ethers'
+
 import { commons } from '..'
+
 import { validateEIP6492Offchain } from './validateEIP6492'
 
 /**

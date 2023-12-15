@@ -1,12 +1,13 @@
 import { JsonRpcRequest, JsonRpcResponse } from '@0xsequence/network'
 import { logger } from '@0xsequence/utils'
 import { EventEmitter2 as EventEmitter } from 'eventemitter2'
+
 import {
-  ProviderMessageResponseCallback,
-  ProviderMessage,
   EventType,
+  ProviderMessage,
   ProviderMessageRequest,
-  ProviderMessageResponse
+  ProviderMessageResponse,
+  ProviderMessageResponseCallback
 } from '../../types'
 
 export interface Stream {

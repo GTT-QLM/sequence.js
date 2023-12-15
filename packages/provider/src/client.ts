@@ -1,4 +1,12 @@
+import { commons } from '@0xsequence/core'
 import { JsonRpcRequest, JsonRpcResponse, NetworkConfig } from '@0xsequence/network'
+import { TypedData } from '@0xsequence/utils'
+import { ethers } from 'ethers'
+
+import packageJson from '../package.json'
+
+import { toExtended } from './extended'
+
 import {
   ConnectDetails,
   ConnectOptions,
@@ -14,12 +22,6 @@ import {
   isMuxTransportTemplate,
   isProviderTransport
 } from '.'
-import { commons } from '@0xsequence/core'
-import { TypedData } from '@0xsequence/utils'
-import { toExtended } from './extended'
-import { ethers } from 'ethers'
-
-import packageJson from '../package.json'
 
 /**
  *  This session class is meant to persist the state of the wallet connection

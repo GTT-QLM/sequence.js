@@ -1,9 +1,8 @@
-import { ethers } from 'ethers'
-
-import { CallReceiverMock } from '@0xsequence/wallet-contracts'
 import { OverwriterEstimator } from '@0xsequence/estimator'
 import { encodeData } from '@0xsequence/wallet/tests/utils'
+import { CallReceiverMock } from '@0xsequence/wallet-contracts'
 import { expect } from 'chai'
+import { ethers } from 'ethers'
 
 const CallReceiverMockArtifact = require('@0xsequence/wallet-contracts/artifacts/contracts/mocks/CallReceiverMock.sol/CallReceiverMock.json')
 

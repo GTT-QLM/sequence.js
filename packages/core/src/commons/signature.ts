@@ -1,4 +1,5 @@
 import { ethers } from 'ethers'
+
 import * as config from './config'
 
 export type SignaturePart = {

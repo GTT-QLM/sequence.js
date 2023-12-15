@@ -10,9 +10,11 @@ import * as utils from '@0xsequence/tests'
 import { CallReceiverMock, HookCallerMock } from '@0xsequence/wallet-contracts'
 import * as chai from 'chai'
 import chaiAsPromised from 'chai-as-promised'
-import { ethers, Signer as AbstractSigner } from 'ethers'
+import { Signer as AbstractSigner, ethers } from 'ethers'
 import * as mockServer from 'mockttp'
+
 import { Session, SessionDumpV1, SessionSettings, ValidateSequenceWalletProof } from '../src'
+
 import { delay, mockDate } from './utils'
 
 const CallReceiverMockArtifact = require('@0xsequence/wallet-contracts/artifacts/contracts/mocks/CallReceiverMock.sol/CallReceiverMock.json')

@@ -1,5 +1,5 @@
-import { expect } from 'chai'
 import { sanitizeHost } from '@0xsequence/utils'
+import { expect } from 'chai'
 
 describe('sanitize', function () {
   it('sanitize host', () => {

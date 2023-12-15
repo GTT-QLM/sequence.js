@@ -1,6 +1,8 @@
-import { ethers } from 'ethers'
 import { commons } from '@0xsequence/core'
+import { ethers } from 'ethers'
+
 import { Status } from '../orchestrator'
+
 import { SapientSigner } from './signer'
 
 export class SignerWrapper implements SapientSigner {

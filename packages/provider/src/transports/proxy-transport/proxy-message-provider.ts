@@ -1,8 +1,7 @@
+import { EventType, InitState, OpenState, OpenWalletIntent, ProviderMessage } from '../../types'
 import { BaseProviderTransport } from '../base-provider-transport'
 
-import { ProviderMessage, OpenState, OpenWalletIntent, EventType, InitState } from '../../types'
-
-import { ProxyMessageChannelPort, ProxyEventTypes } from './proxy-message-channel'
+import { ProxyEventTypes, ProxyMessageChannelPort } from './proxy-message-channel'
 
 export class ProxyMessageProvider extends BaseProviderTransport {
   private port: ProxyMessageChannelPort

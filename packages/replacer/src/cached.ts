@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
-import { runByEIP5719, URISolver } from '.'
+
+import { URISolver, runByEIP5719 } from '.'
 
 export class CachedEIP5719 {
   constructor(

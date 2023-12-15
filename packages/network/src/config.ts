@@ -1,9 +1,10 @@
-import { BigNumberish, ethers, providers } from 'ethers'
 import { Indexer } from '@0xsequence/indexer'
 import { Relayer, RpcRelayerOptions } from '@0xsequence/relayer'
-import { findNetworkConfig, stringTemplate, validateAndSortNetworks } from './utils'
 import { isBigNumberish } from '@0xsequence/utils'
+import { BigNumberish, ethers, providers } from 'ethers'
+
 import { ChainId, NetworkMetadata, networks } from './constants'
+import { findNetworkConfig, stringTemplate, validateAndSortNetworks } from './utils'
 
 export type NetworkConfig = NetworkMetadata & {
   rpcUrl: string

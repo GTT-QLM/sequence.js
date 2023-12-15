@@ -1,4 +1,7 @@
+import { JsonRpcRequest, JsonRpcResponse, allNetworks } from '@0xsequence/network'
+import { expect } from 'chai'
 import { ethers } from 'ethers'
+
 import {
   ConnectOptions,
   OpenWalletIntent,
@@ -7,8 +10,6 @@ import {
   SequenceProvider,
   SingleNetworkSequenceProvider
 } from '../src'
-import { expect } from 'chai'
-import { JsonRpcRequest, JsonRpcResponse, allNetworks } from '@0xsequence/network'
 import { ExtendedTransactionRequest } from '../src/extended'
 
 const hardhat1Provider = new ethers.providers.JsonRpcProvider('http://127.0.0.1:9595')

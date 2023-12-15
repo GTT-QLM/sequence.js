@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
-import { allVersions } from '..'
 
+import { allVersions } from '..'
 import { DeployedWalletContext as context1 } from '../v1'
 import { DeployedWalletContext as context2 } from '../v2'
 

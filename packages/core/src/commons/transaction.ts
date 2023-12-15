@@ -1,6 +1,7 @@
-import { BigNumberish, BytesLike, ethers } from 'ethers'
-import { subdigestOf } from './signature'
 import { walletContracts } from '@0xsequence/abi'
+import { BigNumberish, BytesLike, ethers } from 'ethers'
+
+import { subdigestOf } from './signature'
 
 export interface Transaction {
   to: string
